@@ -1,0 +1,16 @@
+{
+  "name": "benni-new-tab-edge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A calm, customizable new tab extension for Microsoft Edge.",
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/validate.mjs",
+    "validate": "node scripts/validate.mjs",
+    "package": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package.ps1"
+  },
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "node": ">=20"
+  }
+}
