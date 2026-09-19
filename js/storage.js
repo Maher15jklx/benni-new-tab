@@ -9,18 +9,20 @@ export const STORAGE_KEYS = {
 
 export const DEFAULT_SEARCH_PROVIDERS = [
   {
-    id: "bing",
-    label: "Bing",
-    url: "https://www.bing.com/search?q={query}"
+    id: "browser",
+    labelKey: "search.browserDefault",
+    type: "browser"
   },
   {
     id: "youtube",
     label: "YouTube",
+    type: "url",
     url: "https://www.youtube.com/results?search_query={query}"
   },
   {
     id: "maps",
-    label: "Maps",
+    label: "Google Maps",
+    type: "url",
     url: "https://www.google.com/maps/search/{query}"
   }
 ];
@@ -40,12 +42,10 @@ export const DEFAULT_SETTINGS = {
   customImageApiUrl: "",
   fixedBackgroundId: null,
   disabledBackgrounds: [],
-  searchProviderId: "bing",
-  searchProviders: DEFAULT_SEARCH_PROVIDERS,
   tileIconOverrides: {}
 };
 
-const FALLBACK_STORAGE_KEY = "benni-new-tab-edge-state";
+const FALLBACK_STORAGE_KEY = "benni-new-tab-state";
 
 export async function loadState() {
   const defaults = {
@@ -106,8 +106,8 @@ export function normalizeWebUrl(value) {
   }
   const withProtocol = /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
   const url = new URL(withProtocol);
-  if (url.protocol !== "https:" && url.protocol !== "http:") {
-    throw new Error("Nur http:// und https:// URLs sind erlaubt.");
+  if (url.protocol !== "https:") {
+    throw new Error("Nur HTTPS-URLs sind erlaubt.");
   }
   return url.href;
 }
@@ -176,37 +176,11 @@ function normalizeSettings(value) {
     : "";
   settings.fixedBackgroundId = typeof settings.fixedBackgroundId === "string" ? settings.fixedBackgroundId : null;
   settings.disabledBackgrounds = normalizeArray(settings.disabledBackgrounds).filter((item) => typeof item === "string");
-  settings.searchProviders = normalizeSearchProviders(settings.searchProviders);
   settings.tileIconOverrides = normalizeIconOverrides(settings.tileIconOverrides);
-  if (!rawSettings.searchProviderId && typeof rawSettings.searchEngine === "string") {
-    settings.searchProviderId = rawSettings.searchEngine === "google" ? "bing" : rawSettings.searchEngine;
-  }
-  if (!settings.searchProviders.some((provider) => provider.id === settings.searchProviderId)) {
-    settings.searchProviderId = settings.searchProviders[0]?.id || "bing";
-  }
+  delete settings.searchProviderId;
+  delete settings.searchProviders;
   delete settings.searchEngine;
   return settings;
-}
-
-function normalizeSearchProviders(providers) {
-  const seen = new Set();
-  const normalized = normalizeArray(providers)
-    .filter((item) => isPlainObject(item) && item.label && item.url)
-    .map((item) => ({
-      id: typeof item.id === "string" ? item.id : createId("search"),
-      label: String(item.label).trim().slice(0, 14),
-      url: String(item.url).trim()
-    }))
-    .filter((item) => {
-      if (!item.label || !item.url || seen.has(item.id)) {
-        return false;
-      }
-      seen.add(item.id);
-      return true;
-    })
-    .slice(0, 3);
-
-  return normalized.length ? normalized : DEFAULT_SEARCH_PROVIDERS;
 }
 
 function normalizeShortcuts(shortcuts) {

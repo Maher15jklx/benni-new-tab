@@ -2,6 +2,7 @@ import {
   createId,
   DEFAULT_SETTINGS,
   DEFAULT_SEARCH_PROVIDERS,
+  extensionApi,
   getDomain,
   loadState,
   normalizeWebUrl,
@@ -51,11 +52,6 @@ const elements = {
   resetAccentButton: document.querySelector("#resetAccentButton"),
   focusModeToggle: document.querySelector("#focusModeToggle"),
   defaultTilesToggle: document.querySelector("#defaultTilesToggle"),
-  defaultSearchSelect: document.querySelector("#defaultSearchSelect"),
-  searchProviderForm: document.querySelector("#searchProviderForm"),
-  providerLabelInput: document.querySelector("#providerLabelInput"),
-  providerUrlInput: document.querySelector("#providerUrlInput"),
-  searchProviderList: document.querySelector("#searchProviderList"),
   backgroundModeSelect: document.querySelector("#backgroundModeSelect"),
   backgroundSourceSelect: document.querySelector("#backgroundSourceSelect"),
   imageApiCategorySelect: document.querySelector("#imageApiCategorySelect"),
@@ -88,6 +84,7 @@ let appState = {
   shortcuts: [],
   pins: []
 };
+let activeSearchProviderId = DEFAULT_SEARCH_PROVIDERS[0].id;
 
 let toastTimer = null;
 let onlineBackgroundSeed = "";
@@ -99,8 +96,8 @@ let backgroundRequestId = 0;
 const cancelableImageLoads = new Map();
 let resumeOnlineLoadsAfterSettings = false;
 let onlineBackgroundWasPreloaded = false;
-const NEXT_BACKGROUND_SEED_KEY = "benni-new-tab-edge-next-background-seed";
-const PRELOADED_BACKGROUND_SEED_KEY = "benni-new-tab-edge-preloaded-background-seed";
+const NEXT_BACKGROUND_SEED_KEY = "benni-new-tab-next-background-seed";
+const PRELOADED_BACKGROUND_SEED_KEY = "benni-new-tab-preloaded-background-seed";
 const renderedSettingsPages = new Set();
 
 init().catch((error) => {
@@ -141,16 +138,15 @@ function bindEvents() {
     });
   });
 
-  elements.searchProviders.addEventListener("click", async (event) => {
+  elements.searchProviders.addEventListener("click", (event) => {
     const button = event.target.closest(".engine-button");
     if (!button) {
       return;
     }
     const providerId = button.dataset.providerId;
     if (providerId) {
-      appState.settings.searchProviderId = providerId;
+      activeSearchProviderId = providerId;
       renderSearchProviders();
-      await persistSettings();
       elements.body.classList.add("search-active");
       elements.searchInput.focus();
     }
@@ -187,14 +183,6 @@ function bindEvents() {
     await persistSettings();
     render();
   });
-
-  elements.defaultSearchSelect.addEventListener("change", async () => {
-    appState.settings.searchProviderId = elements.defaultSearchSelect.value;
-    await persistSettings();
-    renderSearchProviders();
-  });
-
-  elements.searchProviderForm.addEventListener("submit", handleSearchProviderSubmit);
 
   elements.backgroundModeSelect.addEventListener("change", async () => {
     appState.settings.backgroundMode = elements.backgroundModeSelect.value;
@@ -332,47 +320,23 @@ function updateClock() {
   elements.clock.setAttribute("datetime", now.toISOString());
 }
 
-function handleSearchSubmit(event) {
+async function handleSearchSubmit(event) {
   event.preventDefault();
   const query = elements.searchInput.value.trim();
   if (!query) {
     return;
   }
   const provider = getActiveSearchProvider();
+  if (provider.type === "browser") {
+    try {
+      await runBrowserDefaultSearch(query);
+    } catch (error) {
+      console.error(error);
+      showToast(t("toast.searchError"));
+    }
+    return;
+  }
   location.assign(buildSearchUrl(provider, query));
-}
-
-async function handleSearchProviderSubmit(event) {
-  event.preventDefault();
-  if (appState.settings.searchProviders.length >= 3) {
-    showToast(t("searchSettings.max"));
-    return;
-  }
-
-  const label = elements.providerLabelInput.value.trim();
-  const rawUrl = elements.providerUrlInput.value.trim();
-  if (!label || !rawUrl) {
-    showToast(t("toast.nameUrlMissing"));
-    return;
-  }
-
-  try {
-    const provider = {
-      id: createId("search"),
-      label: label.slice(0, 14),
-      url: normalizeSearchTemplate(rawUrl)
-    };
-    appState.settings.searchProviders = [...appState.settings.searchProviders, provider].slice(0, 3);
-    appState.settings.searchProviderId = provider.id;
-    elements.providerLabelInput.value = "";
-    elements.providerUrlInput.value = "";
-    await persistSettings();
-    render();
-    showToast(t("toast.providerSaved"));
-  } catch (error) {
-    console.warn(error);
-    showToast(t("toast.invalidUrl"));
-  }
 }
 
 async function handleImageFiles(event) {
@@ -546,7 +510,7 @@ function renderSearchProviders() {
     button.className = "engine-button";
     button.type = "button";
     button.dataset.providerId = provider.id;
-    button.textContent = provider.label;
+    button.textContent = getSearchProviderLabel(provider);
     button.classList.toggle("active", provider.id === getActiveSearchProvider().id);
     elements.searchProviders.append(button);
   }
@@ -571,25 +535,11 @@ function renderSettingsPage(pageName, { force = false } = {}) {
   }
   if (pageName === "background") {
     renderBackgroundList();
-  } else if (pageName === "search") {
-    renderDefaultSearchSelect();
-    renderSearchProviderList();
   } else if (pageName === "websites") {
     renderShortcutList();
     renderDefaultTileIconList();
   }
   renderedSettingsPages.add(pageName);
-}
-
-function renderDefaultSearchSelect() {
-  clearNode(elements.defaultSearchSelect);
-  for (const provider of getSearchProviders()) {
-    const option = document.createElement("option");
-    option.value = provider.id;
-    option.textContent = provider.label;
-    option.selected = provider.id === getActiveSearchProvider().id;
-    elements.defaultSearchSelect.append(option);
-  }
 }
 
 function renderPinned() {
@@ -621,76 +571,6 @@ function renderQuickAccess() {
   elements.quickSection.hidden = items.length === 0;
   for (const item of items) {
     elements.quickGrid.append(createTile(item, { source: item.source }));
-  }
-}
-
-function renderSearchProviderList() {
-  clearNode(elements.searchProviderList);
-  const providers = getSearchProviders();
-  const isFull = providers.length >= 3;
-  elements.providerLabelInput.disabled = isFull;
-  elements.providerUrlInput.disabled = isFull;
-  elements.searchProviderForm.querySelector("button").disabled = isFull;
-
-  for (const provider of providers) {
-    const item = document.createElement("form");
-    item.className = "provider-item";
-
-    const labelInput = document.createElement("input");
-    labelInput.type = "text";
-    labelInput.value = provider.label;
-    labelInput.maxLength = 14;
-    labelInput.ariaLabel = t("common.name");
-
-    const urlInput = document.createElement("input");
-    urlInput.type = "text";
-    urlInput.value = provider.url;
-    urlInput.ariaLabel = t("searchSettings.url");
-
-    const actions = document.createElement("div");
-    actions.className = "item-actions";
-
-    const saveButton = smallButton(t("common.save"));
-    saveButton.type = "submit";
-
-    const deleteButton = iconButton("trash", t("common.delete"));
-    deleteButton.disabled = providers.length <= 1;
-    deleteButton.addEventListener("click", async () => {
-      appState.settings.searchProviders = appState.settings.searchProviders.filter((itemProvider) => itemProvider.id !== provider.id);
-      if (appState.settings.searchProviderId === provider.id) {
-        appState.settings.searchProviderId = appState.settings.searchProviders[0]?.id || DEFAULT_SEARCH_PROVIDERS[0].id;
-      }
-      await persistSettings();
-      render();
-      showToast(t("toast.providerDeleted"));
-    });
-
-    item.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const label = labelInput.value.trim();
-      if (!label) {
-        showToast(t("toast.nameMissing"));
-        return;
-      }
-      try {
-        const url = normalizeSearchTemplate(urlInput.value);
-        appState.settings.searchProviders = appState.settings.searchProviders.map((itemProvider) => (
-          itemProvider.id === provider.id
-            ? { ...itemProvider, label: label.slice(0, 14), url }
-            : itemProvider
-        ));
-        await persistSettings();
-        render();
-        showToast(t("toast.providerUpdated"));
-      } catch (error) {
-        console.warn(error);
-        showToast(t("toast.invalidUrl"));
-      }
-    });
-
-    actions.append(saveButton, deleteButton);
-    item.append(labelInput, urlInput, actions);
-    elements.searchProviderList.append(item);
   }
 }
 
@@ -1096,20 +976,26 @@ async function persistSettings() {
 }
 
 function getSearchProviders() {
-  if (!Array.isArray(appState.settings.searchProviders) || !appState.settings.searchProviders.length) {
-    appState.settings.searchProviders = DEFAULT_SEARCH_PROVIDERS;
-  }
-  appState.settings.searchProviders = appState.settings.searchProviders.slice(0, 3);
-  return appState.settings.searchProviders;
+  return DEFAULT_SEARCH_PROVIDERS;
 }
 
 function getActiveSearchProvider() {
   const providers = getSearchProviders();
-  const active = providers.find((provider) => provider.id === appState.settings.searchProviderId) || providers[0];
-  if (active && appState.settings.searchProviderId !== active.id) {
-    appState.settings.searchProviderId = active.id;
+  return providers.find((provider) => provider.id === activeSearchProviderId) || providers[0];
+}
+
+function getSearchProviderLabel(provider) {
+  return provider.labelKey ? t(provider.labelKey) : provider.label;
+}
+
+async function runBrowserDefaultSearch(query) {
+  if (!extensionApi?.search?.query) {
+    throw new Error("Die Browser-Standardsuche ist nicht verfügbar.");
   }
-  return active || DEFAULT_SEARCH_PROVIDERS[0];
+  await extensionApi.search.query({
+    text: query,
+    disposition: "CURRENT_TAB"
+  });
 }
 
 function getTileIcon(tile) {
@@ -1122,7 +1008,10 @@ function isDisplayableIcon(value) {
 }
 
 function buildSearchUrl(provider, query) {
-  const template = provider?.url || DEFAULT_SEARCH_PROVIDERS[0].url;
+  const template = provider?.url;
+  if (!template) {
+    throw new Error("Für dieses Suchziel fehlt eine URL.");
+  }
   const encodedQuery = encodeURIComponent(query);
   if (template.includes("{query}")) {
     return template.replaceAll("{query}", encodedQuery);
@@ -1130,27 +1019,6 @@ function buildSearchUrl(provider, query) {
   const url = new URL(normalizeWebUrl(template));
   url.searchParams.set("q", query);
   return url.href;
-}
-
-function normalizeSearchTemplate(value) {
-  const trimmed = String(value || "").trim();
-  if (!trimmed) {
-    throw new Error("Such-URL fehlt.");
-  }
-
-  const marker = "BENNI_QUERY_PLACEHOLDER";
-  const marked = trimmed.replaceAll("{query}", marker);
-  let normalized = normalizeWebUrl(marked)
-    .replaceAll(encodeURIComponent(marker), "{query}")
-    .replaceAll(marker, "{query}");
-
-  if (!normalized.includes("{query}")) {
-    const url = new URL(normalized);
-    url.searchParams.set("q", "{query}");
-    normalized = url.href.replaceAll("%7Bquery%7D", "{query}");
-  }
-
-  return normalized;
 }
 
 async function importShortcutIcon(file) {

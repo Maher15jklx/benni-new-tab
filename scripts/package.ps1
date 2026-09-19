@@ -5,7 +5,7 @@ $repositoryRoot = Split-Path -Parent $PSScriptRoot
 $manifestPath = Join-Path $repositoryRoot "manifest.json"
 $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
 $outputDirectory = Join-Path $repositoryRoot "dist"
-$archivePath = Join-Path $outputDirectory "benni-new-tab-edge-v$($manifest.version).zip"
+$archivePath = Join-Path $outputDirectory "benni-new-tab-chrome-v$($manifest.version).zip"
 
 & node (Join-Path $PSScriptRoot "validate.mjs")
 if ($LASTEXITCODE -ne 0) {
@@ -33,4 +33,4 @@ try {
   Pop-Location
 }
 
-Write-Output "Edge-Paket erstellt: $archivePath"
+Write-Output "Chrome-Web-Store-Paket erstellt: $archivePath"

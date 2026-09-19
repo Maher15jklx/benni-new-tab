@@ -2,6 +2,15 @@
 
 Alle relevanten Änderungen an Benni New Tab werden in dieser Datei dokumentiert.
 
+## 1.0.1 – 2026-09-19
+
+- Allgemeine Websuche auf die in Chrome eingestellte Standardsuchmaschine umgestellt
+- Chrome-Standardsuche als erste und bei jedem neuen Tab aktive Suchoption festgelegt
+- YouTube und Google Maps als ausdrücklich auswählbare direkte Suchziele beibehalten
+- Suchberechtigung ergänzt und Hostzugriffe auf HTTPS beschränkt
+- Store- und Laufzeittexte für die Veröffentlichung im Chrome Web Store angepasst
+- Datenschutzerklärung vervollständigt und Kontaktadresse ergänzt
+
 ## 1.0.0 – 2026-09-18
 
 - Projekt als eigenständige Microsoft-Edge-Erweiterung neu aufgesetzt

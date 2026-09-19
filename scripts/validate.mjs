@@ -67,11 +67,17 @@ check(manifest.manifest_version === 3, "manifest.json muss Manifest V3 verwenden
 check(manifest.name === "__MSG_extensionName__", "Der Erweiterungsname muss aus den Locales kommen.");
 check(manifest.description === "__MSG_extensionDescription__", "Die Beschreibung muss aus den Locales kommen.");
 check(manifest.default_locale === "de", "Deutsch muss als Standard-Locale gesetzt sein.");
-check(manifest.chrome_url_overrides?.newtab === "newtab.html", "newtab.html muss die Edge-Seite ‚Neuer Tab‘ ersetzen.");
+check(manifest.chrome_url_overrides?.newtab === "newtab.html", "newtab.html muss die Browserseite ‚Neuer Tab‘ ersetzen.");
 check(Array.isArray(manifest.permissions) && manifest.permissions.includes("storage"), "Die storage-Berechtigung fehlt.");
+check(Array.isArray(manifest.permissions) && manifest.permissions.includes("search"), "Die search-Berechtigung fehlt.");
 check(Array.isArray(manifest.optional_host_permissions), "Optionale Host-Berechtigungen fehlen.");
+check(
+  manifest.optional_host_permissions?.every((pattern) => pattern.startsWith("https://")),
+  "Optionale Host-Berechtigungen dürfen nur HTTPS-Ziele erlauben."
+);
 check(!Object.hasOwn(manifest, "browser_specific_settings"), "Firefox-spezifische Manifest-Einträge sind nicht erlaubt.");
 check(manifest.content_security_policy?.extension_pages?.includes("script-src 'self'"), "Die CSP muss lokale Skripte erzwingen.");
+check(!manifest.content_security_policy?.extension_pages?.includes("http:"), "Die CSP darf keine unverschlüsselten HTTP-Ressourcen erlauben.");
 check(packageMetadata.version === manifest.version, "Versionen in package.json und manifest.json stimmen nicht überein.");
 
 const requiredFiles = [
@@ -112,7 +118,8 @@ for (const locale of localeDirectories) {
   const relativePath = path.join("_locales", locale, "messages.json");
   const messages = await readJson(relativePath);
   check(messages.extensionName?.message === "Benni New Tab", `${relativePath}: falscher Erweiterungsname.`);
-  check(messages.extensionDescription?.message?.includes("Edge"), `${relativePath}: Edge fehlt in der Beschreibung.`);
+  check(Boolean(messages.extensionDescription?.message), `${relativePath}: Beschreibung fehlt.`);
+  check(!/Microsoft Edge/i.test(messages.extensionDescription?.message || ""), `${relativePath}: Edge-spezifische Beschreibung gefunden.`);
   check(!/Firefox|BraveLikeNewTab/i.test(JSON.stringify(messages)), `${relativePath}: altes Branding gefunden.`);
 }
 
@@ -123,6 +130,14 @@ for (const relativePath of javascriptFiles) {
   });
   check(result.status === 0, `${relativePath}: JavaScript-Syntaxfehler\n${result.stderr.trim()}`);
 }
+
+const appSource = await readFile(path.join(repositoryRoot, "js/app.js"), "utf8");
+const storageSource = await readFile(path.join(repositoryRoot, "js/storage.js"), "utf8");
+const privacySource = await readFile(path.join(repositoryRoot, "PRIVACY.md"), "utf8");
+check(appSource.includes("extensionApi.search.query"), "Allgemeine Websuchen müssen die Chrome-Such-API verwenden.");
+check(storageSource.indexOf('id: "browser"') < storageSource.indexOf('id: "youtube"'), "Die Browser-Standardsuche muss die erste Suchoption sein.");
+check(storageSource.includes('protocol !== "https:"'), "Nutzer-URLs müssen auf HTTPS begrenzt sein.");
+check(privacySource.includes("maherrasho@gmail.com"), "Die Datenschutz-Kontaktadresse fehlt.");
 
 const runtimeTextFiles = [
   "manifest.json",
@@ -145,4 +160,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Benni New Tab ${manifest.version}: Edge-Paket erfolgreich validiert.`);
+console.log(`Benni New Tab ${manifest.version}: Chrome-Web-Store-Paket erfolgreich validiert.`);

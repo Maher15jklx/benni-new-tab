@@ -2,15 +2,15 @@
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
   "short_name": "Benni New Tab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minimum_chrome_version": "111",
   "description": "__MSG_extensionDescription__",
   "default_locale": "de",
   "permissions": [
-    "storage"
+    "storage",
+    "search"
   ],
   "optional_host_permissions": [
-    "http://*/*",
     "https://*/*"
   ],
   "chrome_url_overrides": {
@@ -23,6 +23,6 @@
     "128": "icons/icon-128.png"
   },
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'none'; img-src 'self' data: http: https:; connect-src 'self' http: https:;"
+    "extension_pages": "script-src 'self'; object-src 'none'; img-src 'self' data: https:; connect-src 'self' https:;"
   }
 }

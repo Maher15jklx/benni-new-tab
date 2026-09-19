@@ -1,8 +1,8 @@
 {
-  "name": "benni-new-tab-edge",
-  "version": "1.0.0",
+  "name": "benni-new-tab",
+  "version": "1.0.1",
   "private": true,
-  "description": "A calm, customizable new tab extension for Microsoft Edge.",
+  "description": "A calm, customizable new tab extension for Chromium-based browsers.",
   "type": "module",
   "scripts": {
     "test": "node scripts/validate.mjs",
