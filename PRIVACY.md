@@ -4,7 +4,7 @@ Stand: 19. September 2026
 
 Diese Datenschutzerklärung beschreibt, wie die Browsererweiterung **Benni New Tab** Daten verarbeitet. Verantwortlich und Kontakt für Datenschutzanfragen ist:
 
-**E-Mail:** [maherrasho@gmail.com](mailto:maherrasho@proton.me)
+**E-Mail:** [maherrasho@proton.me](mailto:maherrasho@proton.me)
 
 ## Zweck der Erweiterung
 
