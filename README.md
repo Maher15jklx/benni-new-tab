@@ -1,4 +1,6 @@
 # Benni New Tab
+Based on BraveLikeNewTab by weltraumcowboy67:
+https://github.com/weltraumcowboy67/BraveLikeNewTab
 
 Benni New Tab ersetzt die Seite „Neuer Tab“ in Google Chrome und Microsoft Edge durch eine schnelle, ruhige und anpassbare Startseite. Die Erweiterung basiert auf Manifest V3, kommt ohne Framework und ohne Build-Schritt aus und speichert Einstellungen, eigene Bilder, Shortcuts und Pins lokal im Browser.
 
