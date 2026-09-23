@@ -1,0 +1,15 @@
+StartPane zastępuje stronę Nowa karta w Microsoft Edge szybką, spokojną i konfigurowalną stroną startową. Jedynym celem rozszerzenia jest zapewnienie w każdej nowej karcie przejrzystego miejsca do wyszukiwania, otwierania często używanych witryn i wyświetlania osobistych teł.
+
+Funkcje:
+• Wyszukiwanie w Internecie przy użyciu domyślnego dostawcy ustawionego w Microsoft Edge. StartPane korzysta wyłącznie z obsługiwanego przez Edge interfejsu rozszerzeń chrome.search i nie odczytuje ani nie zmienia domyślnego dostawcy.
+• Maksymalnie trzy dodatkowe cele wyszukiwania HTTPS. YouTube i Mapy Google są wstępnie skonfigurowane, kontakt następuje dopiero po wybraniu celu i wysłaniu zapytania, a oba cele można edytować, usunąć lub zastąpić.
+• Wbudowane szybkie łącza, własne skróty i przypięte witryny.
+• Losowe, codziennie zmieniane lub stałe tła oraz cztery dołączone tła działające bez połączenia z siecią.
+• Opcjonalne tła online z Picsum Photos, wybranego przez użytkownika interfejsu HTTPS API obrazów albo świadomie zaimportowanego adresu obrazu.
+• Jasny i ciemny motyw, tryb skupienia, kolor akcentu oraz zegar w formacie automatycznym, 12- lub 24-godzinnym.
+• Interfejs w języku polskim, niemieckim, angielskim, hiszpańskim, francuskim, włoskim i rosyjskim.
+
+Prywatność i przejrzystość:
+StartPane zapisuje ustawienia, skróty, przypięte witryny, dodatkowe cele wyszukiwania i zaimportowane obrazy wyłącznie w lokalnej pamięci rozszerzeń Edge. Wyszukiwane hasła nie są zapisywane. Nowe instalacje używają lokalnych teł, dlatego żądanie obrazu nie trafia do usługi zewnętrznej, dopóki użytkownik świadomie nie włączy źródła online. Podczas wyszukiwania hasło jest przekazywane tylko do wybranego celu. Po włączeniu obrazów online wyłącznie wybrany dostawca otrzymuje technicznie niezbędne żądanie.
+
+StartPane nie zawiera analityki, śledzenia, reklam ani kodu zdalnego. Deweloper nie prowadzi serwera przechowującego dane użytkowników oraz nie sprzedaje ani nie wynajmuje danych. Cały wykonywalny kod JavaScript znajduje się w pakiecie rozszerzenia. Dane lokalne można w każdej chwili wyczyścić w ustawieniach.

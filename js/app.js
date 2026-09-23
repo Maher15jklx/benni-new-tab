@@ -5,6 +5,8 @@ import {
   extensionApi,
   getDomain,
   loadState,
+  MAX_ADDITIONAL_SEARCH_PROVIDERS,
+  normalizeSearchTemplate,
   normalizeWebUrl,
   pinKeyForUrl,
   saveCustomImages,
@@ -33,6 +35,7 @@ const DEFAULT_TILES = [
 const elements = {
   root: document.documentElement,
   body: document.body,
+  pageShell: document.querySelector("#pageShell"),
   backgroundLayer: document.querySelector("#backgroundLayer"),
   backgroundLayerNext: document.querySelector("#backgroundLayerNext"),
   clock: document.querySelector("#clock"),
@@ -43,6 +46,11 @@ const elements = {
   searchForm: document.querySelector("#searchForm"),
   searchInput: document.querySelector("#searchInput"),
   searchProviders: document.querySelector("#searchProviders"),
+  defaultSearchSelect: document.querySelector("#defaultSearchSelect"),
+  searchProviderForm: document.querySelector("#searchProviderForm"),
+  providerLabelInput: document.querySelector("#providerLabelInput"),
+  providerUrlInput: document.querySelector("#providerUrlInput"),
+  searchProviderList: document.querySelector("#searchProviderList"),
   pinnedSection: document.querySelector("#pinnedSection"),
   pinnedGrid: document.querySelector("#pinnedGrid"),
   quickSection: document.querySelector("#quickSection"),
@@ -84,7 +92,6 @@ let appState = {
   shortcuts: [],
   pins: []
 };
-let activeSearchProviderId = DEFAULT_SEARCH_PROVIDERS[0].id;
 
 let toastTimer = null;
 let onlineBackgroundSeed = "";
@@ -96,8 +103,10 @@ let backgroundRequestId = 0;
 const cancelableImageLoads = new Map();
 let resumeOnlineLoadsAfterSettings = false;
 let onlineBackgroundWasPreloaded = false;
-const NEXT_BACKGROUND_SEED_KEY = "benni-new-tab-next-background-seed";
-const PRELOADED_BACKGROUND_SEED_KEY = "benni-new-tab-preloaded-background-seed";
+const NEXT_BACKGROUND_SEED_KEY = "startpane-next-background-seed";
+const PRELOADED_BACKGROUND_SEED_KEY = "startpane-preloaded-background-seed";
+const LEGACY_NEXT_BACKGROUND_SEED_KEY = "benni-new-tab-next-background-seed";
+const LEGACY_PRELOADED_BACKGROUND_SEED_KEY = "benni-new-tab-preloaded-background-seed";
 const renderedSettingsPages = new Set();
 
 init().catch((error) => {
@@ -124,8 +133,24 @@ function bindEvents() {
   elements.settingsButton.addEventListener("click", openSettings);
   elements.closeSettingsButton.addEventListener("click", closeSettings);
   elements.panelBackdrop.addEventListener("click", closeSettings);
-  elements.settingsNavItems.forEach((button) => {
+  elements.settingsNavItems.forEach((button, index) => {
+    button.tabIndex = button.classList.contains("active") ? 0 : -1;
     button.addEventListener("click", () => activateSettingsPage(button.dataset.settingsTab));
+    button.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
+        return;
+      }
+      event.preventDefault();
+      const lastIndex = elements.settingsNavItems.length - 1;
+      const nextIndex = event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? lastIndex
+          : (index + (["ArrowRight", "ArrowDown"].includes(event.key) ? 1 : -1) + elements.settingsNavItems.length) % elements.settingsNavItems.length;
+      const nextButton = elements.settingsNavItems[nextIndex];
+      activateSettingsPage(nextButton.dataset.settingsTab);
+      nextButton.focus();
+    });
   });
 
   elements.searchForm.addEventListener("submit", handleSearchSubmit);
@@ -138,19 +163,28 @@ function bindEvents() {
     });
   });
 
-  elements.searchProviders.addEventListener("click", (event) => {
+  elements.searchProviders.addEventListener("click", async (event) => {
     const button = event.target.closest(".engine-button");
     if (!button) {
       return;
     }
     const providerId = button.dataset.providerId;
     if (providerId) {
-      activeSearchProviderId = providerId;
+      appState.settings.searchProviderId = providerId;
       renderSearchProviders();
+      await saveSettings(appState.settings);
       elements.body.classList.add("search-active");
       elements.searchInput.focus();
     }
   });
+
+  elements.defaultSearchSelect.addEventListener("change", async () => {
+    appState.settings.searchProviderId = elements.defaultSearchSelect.value;
+    await persistSettings();
+    renderSearchProviders();
+  });
+
+  elements.searchProviderForm.addEventListener("submit", handleSearchProviderSubmit);
 
   elements.themeSelect.addEventListener("change", async () => {
     appState.settings.theme = elements.themeSelect.value === "light" ? "light" : "dark";
@@ -336,7 +370,55 @@ async function handleSearchSubmit(event) {
     }
     return;
   }
-  location.assign(buildSearchUrl(provider, query));
+  try {
+    location.assign(buildSearchUrl(provider, query));
+  } catch (error) {
+    console.error(error);
+    showToast(t("toast.searchError"));
+  }
+}
+
+async function handleSearchProviderSubmit(event) {
+  event.preventDefault();
+  if (appState.settings.searchProviders.length >= MAX_ADDITIONAL_SEARCH_PROVIDERS) {
+    showToast(t("searchSettings.max"));
+    return;
+  }
+
+  const label = elements.providerLabelInput.value.trim();
+  const rawUrl = elements.providerUrlInput.value.trim();
+  if (!label && !rawUrl) {
+    showToast(t("toast.nameUrlMissing"));
+    return;
+  }
+  if (!label) {
+    showToast(t("toast.nameMissing"));
+    return;
+  }
+  if (!rawUrl) {
+    showToast(t("toast.invalidUrl"));
+    return;
+  }
+
+  try {
+    const provider = {
+      id: createId("search"),
+      label: label.slice(0, 14),
+      type: "url",
+      url: normalizeSearchTemplate(rawUrl)
+    };
+    appState.settings.searchProviders = [...appState.settings.searchProviders, provider]
+      .slice(0, MAX_ADDITIONAL_SEARCH_PROVIDERS);
+    appState.settings.searchProviderId = provider.id;
+    elements.providerLabelInput.value = "";
+    elements.providerUrlInput.value = "";
+    await persistSettings();
+    render();
+    showToast(t("toast.providerSaved"));
+  } catch (error) {
+    console.warn(error);
+    showToast(t("toast.invalidUrl"));
+  }
 }
 
 async function handleImageFiles(event) {
@@ -511,7 +593,9 @@ function renderSearchProviders() {
     button.type = "button";
     button.dataset.providerId = provider.id;
     button.textContent = getSearchProviderLabel(provider);
-    button.classList.toggle("active", provider.id === getActiveSearchProvider().id);
+    const isActive = provider.id === getActiveSearchProvider().id;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
     elements.searchProviders.append(button);
   }
 }
@@ -535,11 +619,107 @@ function renderSettingsPage(pageName, { force = false } = {}) {
   }
   if (pageName === "background") {
     renderBackgroundList();
+  } else if (pageName === "search") {
+    renderDefaultSearchSelect();
+    renderSearchProviderList();
   } else if (pageName === "websites") {
     renderShortcutList();
     renderDefaultTileIconList();
   }
   renderedSettingsPages.add(pageName);
+}
+
+function renderDefaultSearchSelect() {
+  clearNode(elements.defaultSearchSelect);
+  const activeProvider = getActiveSearchProvider();
+  for (const provider of getSearchProviders()) {
+    const option = document.createElement("option");
+    option.value = provider.id;
+    option.textContent = getSearchProviderLabel(provider);
+    option.selected = provider.id === activeProvider.id;
+    elements.defaultSearchSelect.append(option);
+  }
+}
+
+function renderSearchProviderList() {
+  clearNode(elements.searchProviderList);
+  const providers = appState.settings.searchProviders;
+  const isFull = providers.length >= MAX_ADDITIONAL_SEARCH_PROVIDERS;
+  elements.providerLabelInput.disabled = isFull;
+  elements.providerUrlInput.disabled = isFull;
+  elements.searchProviderForm.querySelector('button[type="submit"]').disabled = isFull;
+
+  if (!providers.length) {
+    const empty = document.createElement("p");
+    empty.className = "settings-note empty-state";
+    empty.textContent = t("searchSettings.empty");
+    elements.searchProviderList.append(empty);
+    return;
+  }
+
+  for (const provider of providers) {
+    const item = document.createElement("form");
+    item.className = "provider-item";
+
+    const labelInput = document.createElement("input");
+    labelInput.type = "text";
+    labelInput.value = provider.label;
+    labelInput.maxLength = 14;
+    labelInput.required = true;
+    labelInput.ariaLabel = t("common.name");
+
+    const urlInput = document.createElement("input");
+    urlInput.type = "text";
+    urlInput.inputMode = "url";
+    urlInput.value = provider.url;
+    urlInput.required = true;
+    urlInput.ariaLabel = t("searchSettings.url");
+
+    const actions = document.createElement("div");
+    actions.className = "item-actions";
+
+    const saveButton = smallButton(t("common.save"));
+    saveButton.type = "submit";
+
+    const deleteButton = iconButton("trash", t("common.delete"));
+    deleteButton.addEventListener("click", async () => {
+      appState.settings.searchProviders = appState.settings.searchProviders
+        .filter((itemProvider) => itemProvider.id !== provider.id);
+      if (appState.settings.searchProviderId === provider.id) {
+        appState.settings.searchProviderId = DEFAULT_SEARCH_PROVIDERS[0].id;
+      }
+      await persistSettings();
+      render();
+      showToast(t("toast.providerDeleted"));
+    });
+
+    item.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const label = labelInput.value.trim();
+      if (!label) {
+        showToast(t("toast.nameMissing"));
+        return;
+      }
+      try {
+        const url = normalizeSearchTemplate(urlInput.value);
+        appState.settings.searchProviders = appState.settings.searchProviders.map((itemProvider) => (
+          itemProvider.id === provider.id
+            ? { ...itemProvider, label: label.slice(0, 14), type: "url", url }
+            : itemProvider
+        ));
+        await persistSettings();
+        render();
+        showToast(t("toast.providerUpdated"));
+      } catch (error) {
+        console.warn(error);
+        showToast(t("toast.invalidUrl"));
+      }
+    });
+
+    actions.append(saveButton, deleteButton);
+    item.append(labelInput, urlInput, actions);
+    elements.searchProviderList.append(item);
+  }
 }
 
 function renderPinned() {
@@ -894,7 +1074,9 @@ function openSettings() {
   }
   elements.settingsPanel.setAttribute("aria-hidden", "false");
   elements.settingsPanel.inert = false;
+  elements.pageShell.inert = true;
   elements.body.classList.add("panel-open");
+  renderSettingsPage(getActiveSettingsPage(), { force: true });
   const activeNavItem = elements.settingsNavItems.find((item) => item.classList.contains("active"));
   (activeNavItem || elements.closeSettingsButton).focus();
 }
@@ -922,6 +1104,7 @@ function closeSettings() {
   elements.body.classList.remove("panel-open");
   elements.settingsPanel.setAttribute("aria-hidden", "true");
   elements.settingsPanel.inert = true;
+  elements.pageShell.inert = false;
   if (lastFocusedElement instanceof HTMLElement) {
     lastFocusedElement.focus();
   }
@@ -937,6 +1120,7 @@ function activateSettingsPage(pageName) {
     const active = button.dataset.settingsTab === pageName;
     button.classList.toggle("active", active);
     button.setAttribute("aria-selected", String(active));
+    button.tabIndex = active ? 0 : -1;
     if (active) {
       activeButton = button;
     }
@@ -976,12 +1160,16 @@ async function persistSettings() {
 }
 
 function getSearchProviders() {
-  return DEFAULT_SEARCH_PROVIDERS;
+  return [DEFAULT_SEARCH_PROVIDERS[0], ...appState.settings.searchProviders];
 }
 
 function getActiveSearchProvider() {
   const providers = getSearchProviders();
-  return providers.find((provider) => provider.id === activeSearchProviderId) || providers[0];
+  const active = providers.find((provider) => provider.id === appState.settings.searchProviderId) || providers[0];
+  if (appState.settings.searchProviderId !== active.id) {
+    appState.settings.searchProviderId = active.id;
+  }
+  return active;
 }
 
 function getSearchProviderLabel(provider) {
@@ -1206,9 +1394,16 @@ function prepareBackgroundSeeds() {
     nextOnlineBackgroundSeed = createRefreshSeed();
     return;
   }
-  onlineBackgroundSeed = localStorage.getItem(NEXT_BACKGROUND_SEED_KEY) || createRefreshSeed();
-  onlineBackgroundWasPreloaded = localStorage.getItem(PRELOADED_BACKGROUND_SEED_KEY) === onlineBackgroundSeed;
+  onlineBackgroundSeed = localStorage.getItem(NEXT_BACKGROUND_SEED_KEY)
+    || localStorage.getItem(LEGACY_NEXT_BACKGROUND_SEED_KEY)
+    || createRefreshSeed();
+  onlineBackgroundWasPreloaded = (
+    localStorage.getItem(PRELOADED_BACKGROUND_SEED_KEY)
+    || localStorage.getItem(LEGACY_PRELOADED_BACKGROUND_SEED_KEY)
+  ) === onlineBackgroundSeed;
   localStorage.removeItem(PRELOADED_BACKGROUND_SEED_KEY);
+  localStorage.removeItem(LEGACY_NEXT_BACKGROUND_SEED_KEY);
+  localStorage.removeItem(LEGACY_PRELOADED_BACKGROUND_SEED_KEY);
   nextOnlineBackgroundSeed = createRefreshSeed();
   localStorage.setItem(NEXT_BACKGROUND_SEED_KEY, nextOnlineBackgroundSeed);
 }

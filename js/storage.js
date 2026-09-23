@@ -27,6 +27,8 @@ export const DEFAULT_SEARCH_PROVIDERS = [
   }
 ];
 
+export const MAX_ADDITIONAL_SEARCH_PROVIDERS = 3;
+
 export const DEFAULT_SETTINGS = {
   theme: "dark",
   accentColor: "#0f6cbd",
@@ -42,10 +44,19 @@ export const DEFAULT_SETTINGS = {
   customImageApiUrl: "",
   fixedBackgroundId: null,
   disabledBackgrounds: [],
+  searchProviderId: "browser",
+  searchProviders: DEFAULT_SEARCH_PROVIDERS
+    .filter((provider) => provider.type === "url")
+    .map((provider) => ({ ...provider })),
   tileIconOverrides: {}
 };
 
-const FALLBACK_STORAGE_KEY = "benni-new-tab-state";
+const FALLBACK_STORAGE_KEY = "startpane-state";
+const LEGACY_FALLBACK_STORAGE_KEYS = ["benni-new-tab-state", "benni-newtab-state"];
+const LEGACY_DEFAULT_SEARCH_PROVIDERS = new Map([
+  ["bing", { label: "Bing", url: "https://www.bing.com/search?q={query}" }],
+  ["brave", { label: "Brave", url: "https://search.brave.com/search?q={query}" }]
+]);
 
 export async function loadState() {
   const defaults = {
@@ -97,6 +108,9 @@ export async function resetAllData() {
     }
   }
   localStorage.removeItem(FALLBACK_STORAGE_KEY);
+  for (const legacyKey of LEGACY_FALLBACK_STORAGE_KEYS) {
+    localStorage.removeItem(legacyKey);
+  }
 }
 
 export function normalizeWebUrl(value) {
@@ -110,6 +124,27 @@ export function normalizeWebUrl(value) {
     throw new Error("Nur HTTPS-URLs sind erlaubt.");
   }
   return url.href;
+}
+
+export function normalizeSearchTemplate(value) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) {
+    throw new Error("Such-URL fehlt.");
+  }
+
+  const marker = "STARTPANE_QUERY_PLACEHOLDER";
+  const marked = trimmed.replaceAll("{query}", marker);
+  let normalized = normalizeWebUrl(marked)
+    .replaceAll(encodeURIComponent(marker), "{query}")
+    .replaceAll(marker, "{query}");
+
+  if (!normalized.includes("{query}")) {
+    const url = new URL(normalized);
+    url.searchParams.set("q", "{query}");
+    normalized = url.href.replaceAll("%7Bquery%7D", "{query}");
+  }
+
+  return normalized;
 }
 
 export function getDomain(url) {
@@ -138,7 +173,7 @@ export function pinKeyForUrl(url) {
   }
 }
 
-function normalizeSettings(value) {
+export function normalizeSettings(value) {
   const rawSettings = isPlainObject(value) ? value : {};
   const settings = { ...DEFAULT_SETTINGS };
   for (const key of Object.keys(DEFAULT_SETTINGS)) {
@@ -176,11 +211,54 @@ function normalizeSettings(value) {
     : "";
   settings.fixedBackgroundId = typeof settings.fixedBackgroundId === "string" ? settings.fixedBackgroundId : null;
   settings.disabledBackgrounds = normalizeArray(settings.disabledBackgrounds).filter((item) => typeof item === "string");
+  settings.searchProviders = normalizeSearchProviders(settings.searchProviders);
+  const requestedSearchProviderId = typeof settings.searchProviderId === "string"
+    ? settings.searchProviderId
+    : "browser";
+  settings.searchProviderId = requestedSearchProviderId === "browser"
+    || settings.searchProviders.some((provider) => provider.id === requestedSearchProviderId)
+    ? requestedSearchProviderId
+    : "browser";
   settings.tileIconOverrides = normalizeIconOverrides(settings.tileIconOverrides);
-  delete settings.searchProviderId;
-  delete settings.searchProviders;
   delete settings.searchEngine;
   return settings;
+}
+
+export function normalizeSearchProviders(providers) {
+  const seen = new Set(["browser"]);
+  return normalizeArray(providers)
+    .filter((item) => (
+      isPlainObject(item)
+      && item.label
+      && item.url
+    ))
+    .map((item) => {
+      try {
+        return {
+          id: typeof item.id === "string" && item.id.trim() ? item.id.trim().slice(0, 96) : createId("search"),
+          label: String(item.label).trim().slice(0, 14),
+          type: "url",
+          url: normalizeSearchTemplate(item.url)
+        };
+      } catch {
+        return null;
+      }
+    })
+    .filter((item) => {
+      if (!item?.label || seen.has(item.id) || isUnmodifiedLegacyDefaultProvider(item)) {
+        return false;
+      }
+      seen.add(item.id);
+      return true;
+    })
+    .slice(0, MAX_ADDITIONAL_SEARCH_PROVIDERS);
+}
+
+function isUnmodifiedLegacyDefaultProvider(provider) {
+  const legacyDefault = LEGACY_DEFAULT_SEARCH_PROVIDERS.get(provider.id);
+  return Boolean(legacyDefault
+    && provider.label === legacyDefault.label
+    && provider.url === legacyDefault.url);
 }
 
 function normalizeShortcuts(shortcuts) {
@@ -277,7 +355,16 @@ async function storageGet(defaults) {
 
   try {
     const raw = localStorage.getItem(FALLBACK_STORAGE_KEY);
-    return raw ? { ...defaults, ...JSON.parse(raw) } : defaults;
+    if (raw) {
+      return { ...defaults, ...JSON.parse(raw) };
+    }
+    for (const legacyKey of LEGACY_FALLBACK_STORAGE_KEYS) {
+      const legacyRaw = localStorage.getItem(legacyKey);
+      if (legacyRaw) {
+        return { ...defaults, ...JSON.parse(legacyRaw) };
+      }
+    }
+    return defaults;
   } catch {
     return defaults;
   }

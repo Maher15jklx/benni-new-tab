@@ -1,0 +1,15 @@
+StartPane remplace la page Nouvel onglet de Microsoft Edge par une page d’accueil rapide, apaisée et personnalisable. Son objectif unique est de faire de chaque nouvel onglet un point de départ clair pour la recherche, les sites fréquemment utilisés et les arrière-plans personnels.
+
+Fonctionnalités :
+• Recherche sur le Web avec le moteur par défaut configuré dans Microsoft Edge. StartPane utilise uniquement l’API d’extension chrome.search prise en charge par Edge et ne lit ni ne modifie ce moteur.
+• Jusqu’à trois destinations de recherche HTTPS supplémentaires. YouTube et Google Maps sont préremplis, contactés uniquement après sélection et envoi d’une recherche, et peuvent être modifiés, supprimés ou remplacés.
+• Liens rapides intégrés, raccourcis personnels et sites Web épinglés.
+• Arrière-plans aléatoires, quotidiens ou fixes, ainsi que quatre arrière-plans intégrés utilisables hors connexion.
+• Arrière-plans en ligne facultatifs via Picsum Photos, une API d’images HTTPS choisie par l’utilisateur ou l’import volontaire d’une URL d’image.
+• Thèmes clair et sombre, mode concentration, couleur d’accentuation et horloge au format automatique, 12 heures ou 24 heures.
+• Interface disponible en français, allemand, anglais, espagnol, italien, polonais et russe.
+
+Confidentialité et transparence :
+StartPane enregistre les réglages, raccourcis, sites épinglés, destinations de recherche supplémentaires et images importées uniquement dans le stockage local des extensions Edge. Les termes recherchés ne sont pas enregistrés. Une nouvelle installation utilise des arrière-plans locaux ; aucune demande d’image n’est donc envoyée à un service externe sans activation volontaire d’une source en ligne. Lors d’une recherche, le terme est transmis uniquement à la destination sélectionnée. Si les images en ligne sont activées, seul le fournisseur choisi reçoit la requête techniquement nécessaire.
+
+StartPane ne contient aucun outil d’analyse, suivi, publicité ou code distant. Le développeur n’exploite aucun serveur pour les données utilisateur et ne vend ni ne loue de données. Tout le JavaScript exécutable est inclus dans le paquet de l’extension. Les données locales peuvent être réinitialisées à tout moment dans les paramètres.

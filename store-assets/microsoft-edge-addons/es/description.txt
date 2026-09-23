@@ -1,0 +1,15 @@
+StartPane sustituye la página Nueva pestaña de Microsoft Edge por una página de inicio rápida, tranquila y personalizable. Su único propósito es convertir cada nueva pestaña en un punto de partida claro para buscar, abrir sitios frecuentes y mostrar fondos personales.
+
+Funciones:
+• Búsqueda web mediante el proveedor de búsqueda predeterminado configurado en Microsoft Edge. StartPane utiliza únicamente la API de extensiones chrome.search compatible con Edge y no consulta ni modifica dicho proveedor.
+• Hasta tres destinos de búsqueda HTTPS adicionales. YouTube y Google Maps vienen preconfigurados, solo se contactan tras seleccionarlos y enviar una búsqueda, y pueden editarse, eliminarse o sustituirse.
+• Accesos rápidos integrados, atajos personales y sitios web fijados.
+• Fondos aleatorios, diarios o fijos, además de cuatro fondos incluidos que funcionan sin conexión.
+• Fondos en línea opcionales desde Picsum Photos, una API de imágenes HTTPS elegida por el usuario o una URL de imagen importada de forma consciente.
+• Temas claro y oscuro, modo de concentración, color de acento y reloj en formato automático, de 12 o de 24 horas.
+• Interfaz en español, alemán, inglés, francés, italiano, polaco y ruso.
+
+Privacidad y transparencia:
+StartPane guarda la configuración, los atajos, los sitios fijados, los destinos de búsqueda adicionales y las imágenes importadas únicamente en el almacenamiento local de extensiones de Edge. Los términos de búsqueda no se guardan. Las instalaciones nuevas usan fondos locales; no se envía ninguna solicitud de imagen a un servicio externo salvo que el usuario active expresamente una fuente en línea. Al realizar una búsqueda, el término se envía solo al destino seleccionado. Si se habilitan imágenes en línea, únicamente el proveedor elegido recibe la solicitud técnicamente necesaria.
+
+StartPane no incluye análisis, seguimiento, publicidad ni código remoto. El desarrollador no mantiene ningún servidor para datos de usuarios y no vende ni alquila datos. Todo el JavaScript ejecutable está incluido en el paquete de la extensión. Los datos locales se pueden restablecer en cualquier momento desde la configuración.

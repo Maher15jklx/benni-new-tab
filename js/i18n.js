@@ -4,30 +4,30 @@ const translations = {
   de: {
     "page.title": "Neuer Tab", "settings.title": "Einstellungen", "settings.heading": "Startseite des neuen Tabs personalisieren", "settings.open": "Einstellungen öffnen", "settings.close": "Einstellungen schließen", "settings.categories": "Einstellungskategorien",
     "nav.appearance": "Darstellung", "nav.background": "Hintergrundbild", "nav.search": "Suchen", "nav.websites": "Webseiten", "nav.clockLanguage": "Uhr & Sprache", "nav.data": "Daten",
-    "search.region": "Suche", "search.queryLabel": "Suchbegriff", "search.placeholder": "Im Web suchen", "search.providers": "Suchziele", "search.browserDefault": "Chrome-Standard",
+    "search.region": "Suche", "search.queryLabel": "Suchbegriff", "search.placeholder": "Im Web suchen", "search.providers": "Suchziele", "search.browserDefault": "Edge-Standard",
     "tiles.pinned": "Angepinnt", "tiles.quickAccess": "Schnellzugriff", "tiles.website": "Webseite", "tiles.pin": "Anpinnen", "tiles.unpin": "Pin lösen",
     "appearance.title": "Darstellung", "appearance.theme": "Theme", "appearance.dark": "Dunkel (empfohlen)", "appearance.light": "Hell (Test)", "appearance.focus": "Fokusmodus", "appearance.focusHelp": "Blendet Schnellzugriffe aus.", "appearance.accent": "Akzentfarbe", "appearance.accentHelp": "Ändert Auswahl, Schalter und Fokusfarbe der Einstellungen.", "appearance.lightWarningTitle": "Light Mode ist im Test", "appearance.lightWarning": "Einzelne Farben oder Kontraste können noch fehlerhaft wirken.",
     "background.title": "Hintergrundbild", "background.change": "Bildwechsel", "background.random": "Zufällig", "background.daily": "Täglich", "background.fixed": "Festes Bild", "background.source": "Bildquelle", "background.sourceHelp": "Online-Bilder fallen offline automatisch auf lokale Bilder zurück.", "background.picsum": "Picsum Photos (Beta)", "background.local": "Nur lokal", "background.customApi": "Eigene Bild-API (Beta)", "background.category": "Kategorie", "background.categoryHelp": "Picsum nutzt geprüfte, wasserzeichenfreie Bildgruppen.", "background.categoryAll": "Alle", "background.categoryNature": "Natur", "background.categoryArchitecture": "Stadt & Architektur", "background.categoryTechnology": "Technologie", "background.categoryPeople": "Menschen", "background.categoryMinimal": "Ruhig & Minimal", "background.apiUrl": "Direkte Bild-URL", "background.apiPlaceholder": "https://example.com/{width}/{height}?seed={seed}", "background.apiHelp": "Unterstützt {width}, {height}, {seed} und {category}. Die URL muss direkt ein Bild liefern.", "background.preload": "Nächstes Bild vorladen", "background.preloadHelp": "Macht den nächsten neuen Tab schneller, benötigt aber eine zusätzliche Bildanfrage.", "background.offlineTitle": "Offline verfügbar", "background.offlineHelp": "Uhr, Einstellungen, Shortcuts, Pins und lokale Bilder funktionieren offline. Suche und Online-Bilder benötigen Internet.", "background.nextImage": "Neues Online-Bild", "background.nextImageHelp": "Lädt sofort ein anderes Bild, sofern eine Online-Quelle aktiv ist.", "background.ownImages": "Eigene Bilder", "background.import": "Bilder importieren", "background.imageUrl": "Bild-URL", "background.imageUrlPlaceholder": "https://example.com/image.jpg", "background.saved": "Gespeicherte Bilder", "background.builtin": "Lokal gebündelt", "background.custom": "Lokal gespeichert", "background.set": "Festlegen", "background.setActive": "Festgelegt", "background.show": "Einblenden", "background.hide": "Ausblenden", "background.apiUnavailable": "Online-Bild nicht verfügbar. Lokaler Hintergrund wird verwendet.", "background.localOnly": "Aktiviere zuerst eine Online-Bildquelle.", "background.customMissing": "Trage zuerst eine gültige Bild-API-URL ein.", "background.mistyLake": "Nebel am See", "background.canyonDusk": "Canyonlicht", "background.basaltCoast": "Basaltküste", "background.forestMeadow": "Waldlichtung",
-    "searchSettings.title": "Suchen", "searchSettings.default": "Chrome-Standardsuche", "searchSettings.defaultHelp": "Allgemeine Websuchen verwenden immer die in Chrome eingestellte Standardsuchmaschine.", "searchSettings.options": "Zusätzliche Suchziele", "searchSettings.optionsHelp": "YouTube und Google Maps können pro Suche direkt ausgewählt werden. Beim Öffnen eines neuen Tabs ist immer die Chrome-Standardsuche aktiv.",
+    "searchSettings.title": "Suchen", "searchSettings.default": "Microsoft Edge-Standardsuche", "searchSettings.defaultHelp": "Allgemeine Websuchen verwenden die in Microsoft Edge eingestellte Standardsuchmaschine. Deine Auswahl wird lokal gespeichert.", "searchSettings.providers": "Zusätzliche Suchziele", "searchSettings.providersHelp": "Füge bis zu drei zusätzliche HTTPS-Suchziele hinzu. Verwende {query} als Platzhalter für den Suchbegriff.", "searchSettings.url": "Such-URL", "searchSettings.urlPlaceholder": "https://example.com/search?q={query}", "searchSettings.max": "Du kannst höchstens drei zusätzliche Suchziele speichern.", "searchSettings.empty": "Noch keine zusätzlichen Suchziele gespeichert.",
     "websites.title": "Webseiten", "websites.defaults": "Standard-Kacheln", "websites.defaultsHelp": "Zeigt die mitgelieferten Schnellzugriffe.", "websites.shortcuts": "Eigene Shortcuts", "websites.empty": "Noch keine eigenen Shortcuts gespeichert.", "websites.defaultIcons": "Standard-Icons", "websites.defaultIconsHelp": "Ersetzt die Icons der festen Schnellzugriffe nur lokal.",
     "clock.title": "Uhr & Sprache", "clock.currentTime": "Aktuelle Uhrzeit", "clock.show": "Uhr anzeigen", "clock.format": "Format", "clock.auto": "Automatisch", "clock.twelve": "12-Stunden-Uhr", "clock.twentyFour": "24-Stunden-Uhr", "clock.language": "Sprache", "clock.languageHelp": "Ändert die Sprache dieser Startseite.", "clock.languageAuto": "Automatisch",
     "data.title": "Daten", "data.reset": "Lokale Daten zurücksetzen", "data.resetHelp": "Löscht Einstellungen, Bilder, Shortcuts und Pins dieser Erweiterung.", "data.resetButton": "Zurücksetzen", "data.confirm": "Alle lokalen Einstellungen, Bilder, Shortcuts und Pins dieser Erweiterung löschen?", "data.privacy": "Deine Einstellungen bleiben lokal. Nur bei einer aktiven Online-Bildquelle wird eine Bildanfrage an den ausgewählten Dienst gesendet.",
     "common.name": "Name", "common.icon": "Icon", "common.add": "Hinzufügen", "common.save": "Speichern", "common.delete": "Löschen", "common.restore": "Zurück", "common.load": "Laden", "common.reset": "Standard",
-    "toast.loadError": "Die Startseite konnte nicht vollständig geladen werden.", "toast.searchError": "Die Chrome-Standardsuche konnte nicht geöffnet werden.", "toast.saved": "Gespeichert.", "toast.nameUrlMissing": "Name und URL fehlen.", "toast.nameMissing": "Name fehlt.", "toast.invalidUrl": "URL ist ungültig.", "toast.imageSaved": "Bild gespeichert.", "toast.imagesSaved": "{count} Bilder gespeichert.", "toast.imageError": "Bild konnte nicht gespeichert werden.", "toast.imageUrlSaved": "Bild-URL lokal gespeichert.", "toast.imageUrlError": "Bild-URL konnte nicht importiert werden.", "toast.shortcutSaved": "Shortcut gespeichert.", "toast.shortcutUpdated": "Shortcut aktualisiert.", "toast.shortcutDeleted": "Shortcut gelöscht.", "toast.iconSaved": "Icon gespeichert.", "toast.iconRemoved": "Icon entfernt.", "toast.iconRestored": "Standard-Icon wiederhergestellt.", "toast.iconError": "Icon konnte nicht gespeichert werden.", "toast.pinned": "Angepinnt.", "toast.unpinned": "Pin gelöst."
+    "toast.loadError": "Die Startseite konnte nicht vollständig geladen werden.", "toast.searchError": "Die Microsoft Edge-Standardsuche konnte nicht geöffnet werden.", "toast.saved": "Gespeichert.", "toast.nameUrlMissing": "Name und URL fehlen.", "toast.nameMissing": "Name fehlt.", "toast.invalidUrl": "URL ist ungültig.", "toast.imageSaved": "Bild gespeichert.", "toast.imagesSaved": "{count} Bilder gespeichert.", "toast.imageError": "Bild konnte nicht gespeichert werden.", "toast.imageUrlSaved": "Bild-URL lokal gespeichert.", "toast.imageUrlError": "Bild-URL konnte nicht importiert werden.", "toast.shortcutSaved": "Shortcut gespeichert.", "toast.shortcutUpdated": "Shortcut aktualisiert.", "toast.shortcutDeleted": "Shortcut gelöscht.", "toast.providerSaved": "Suchziel gespeichert.", "toast.providerUpdated": "Suchziel aktualisiert.", "toast.providerDeleted": "Suchziel gelöscht.", "toast.iconSaved": "Icon gespeichert.", "toast.iconRemoved": "Icon entfernt.", "toast.iconRestored": "Standard-Icon wiederhergestellt.", "toast.iconError": "Icon konnte nicht gespeichert werden.", "toast.pinned": "Angepinnt.", "toast.unpinned": "Pin gelöst."
   },
   en: {
     "page.title": "New Tab", "settings.title": "Settings", "settings.heading": "Customize the new tab page", "settings.open": "Open settings", "settings.close": "Close settings", "settings.categories": "Settings categories",
     "nav.appearance": "Appearance", "nav.background": "Background image", "nav.search": "Search", "nav.websites": "Websites", "nav.clockLanguage": "Clock & language", "nav.data": "Data",
-    "search.region": "Search", "search.queryLabel": "Search query", "search.placeholder": "Search the web", "search.providers": "Search destinations", "search.browserDefault": "Chrome default",
+    "search.region": "Search", "search.queryLabel": "Search query", "search.placeholder": "Search the web", "search.providers": "Search destinations", "search.browserDefault": "Edge default",
     "tiles.pinned": "Pinned", "tiles.quickAccess": "Quick access", "tiles.website": "Website", "tiles.pin": "Pin", "tiles.unpin": "Unpin",
     "appearance.title": "Appearance", "appearance.theme": "Theme", "appearance.dark": "Dark (recommended)", "appearance.light": "Light (testing)", "appearance.focus": "Focus mode", "appearance.focusHelp": "Hides quick access tiles.", "appearance.accent": "Accent color", "appearance.accentHelp": "Changes selection, switch, and focus colors in settings.", "appearance.lightWarningTitle": "Light mode is in testing", "appearance.lightWarning": "Some colors or contrasts may still look incorrect.",
     "background.title": "Background image", "background.change": "Image rotation", "background.random": "Random", "background.daily": "Daily", "background.fixed": "Fixed image", "background.source": "Image source", "background.sourceHelp": "Online images automatically fall back to local images when offline.", "background.picsum": "Picsum Photos (Beta)", "background.local": "Local only", "background.customApi": "Custom image API (Beta)", "background.category": "Category", "background.categoryHelp": "Picsum uses reviewed, watermark-free image groups.", "background.categoryAll": "All", "background.categoryNature": "Nature", "background.categoryArchitecture": "City & architecture", "background.categoryTechnology": "Technology", "background.categoryPeople": "People", "background.categoryMinimal": "Calm & minimal", "background.apiUrl": "Direct image URL", "background.apiPlaceholder": "https://example.com/{width}/{height}?seed={seed}", "background.apiHelp": "Supports {width}, {height}, {seed}, and {category}. The URL must return an image directly.", "background.preload": "Preload next image", "background.preloadHelp": "Makes the next new tab faster but uses one additional image request.", "background.offlineTitle": "Available offline", "background.offlineHelp": "Clock, settings, shortcuts, pins, and local images work offline. Search and online images require internet.", "background.nextImage": "New online image", "background.nextImageHelp": "Loads another image when an online source is active.", "background.ownImages": "Your images", "background.import": "Import images", "background.imageUrl": "Image URL", "background.imageUrlPlaceholder": "https://example.com/image.jpg", "background.saved": "Saved images", "background.builtin": "Bundled locally", "background.custom": "Saved locally", "background.set": "Set", "background.setActive": "Selected", "background.show": "Show", "background.hide": "Hide", "background.apiUnavailable": "Online image unavailable. A local background is being used.", "background.localOnly": "Enable an online image source first.", "background.customMissing": "Enter a valid image API URL first.", "background.mistyLake": "Misty lake", "background.canyonDusk": "Canyon dusk", "background.basaltCoast": "Basalt coast", "background.forestMeadow": "Forest meadow",
-    "searchSettings.title": "Search", "searchSettings.default": "Chrome default search", "searchSettings.defaultHelp": "General web searches always use the default search engine configured in Chrome.", "searchSettings.options": "Additional search destinations", "searchSettings.optionsHelp": "YouTube and Google Maps can be selected directly for an individual search. Chrome default search is active whenever a new tab opens.",
+    "searchSettings.title": "Search", "searchSettings.default": "Microsoft Edge default search", "searchSettings.defaultHelp": "General web searches use the default search engine configured in Microsoft Edge. Your selection is saved locally.", "searchSettings.providers": "Additional search destinations", "searchSettings.providersHelp": "Add up to three additional HTTPS search destinations. Use {query} as the placeholder for the search term.", "searchSettings.url": "Search URL", "searchSettings.urlPlaceholder": "https://example.com/search?q={query}", "searchSettings.max": "You can save up to three additional search destinations.", "searchSettings.empty": "No additional search destinations saved yet.",
     "websites.title": "Websites", "websites.defaults": "Default tiles", "websites.defaultsHelp": "Shows the bundled quick access tiles.", "websites.shortcuts": "Custom shortcuts", "websites.empty": "No custom shortcuts saved yet.", "websites.defaultIcons": "Default icons", "websites.defaultIconsHelp": "Replaces bundled quick access icons locally.",
     "clock.title": "Clock & language", "clock.currentTime": "Current time", "clock.show": "Show clock", "clock.format": "Format", "clock.auto": "Automatic", "clock.twelve": "12-hour clock", "clock.twentyFour": "24-hour clock", "clock.language": "Language", "clock.languageHelp": "Changes the language of this start page.", "clock.languageAuto": "Automatic",
     "data.title": "Data", "data.reset": "Reset local data", "data.resetHelp": "Deletes this extension's settings, images, shortcuts, and pins.", "data.resetButton": "Reset", "data.confirm": "Delete all local settings, images, shortcuts, and pins for this extension?", "data.privacy": "Your settings stay local. An image request is sent to the selected service only when an online image source is active.",
     "common.name": "Name", "common.icon": "Icon", "common.add": "Add", "common.save": "Save", "common.delete": "Delete", "common.restore": "Restore", "common.load": "Load", "common.reset": "Default",
-    "toast.loadError": "The start page could not be loaded completely.", "toast.searchError": "Chrome default search could not be opened.", "toast.saved": "Saved.", "toast.nameUrlMissing": "Name and URL are required.", "toast.nameMissing": "Name is required.", "toast.invalidUrl": "The URL is invalid.", "toast.imageSaved": "Image saved.", "toast.imagesSaved": "{count} images saved.", "toast.imageError": "The image could not be saved.", "toast.imageUrlSaved": "Image URL saved locally.", "toast.imageUrlError": "The image URL could not be imported.", "toast.shortcutSaved": "Shortcut saved.", "toast.shortcutUpdated": "Shortcut updated.", "toast.shortcutDeleted": "Shortcut deleted.", "toast.iconSaved": "Icon saved.", "toast.iconRemoved": "Icon removed.", "toast.iconRestored": "Default icon restored.", "toast.iconError": "The icon could not be saved.", "toast.pinned": "Pinned.", "toast.unpinned": "Unpinned."
+    "toast.loadError": "The start page could not be loaded completely.", "toast.searchError": "Microsoft Edge default search could not be opened.", "toast.saved": "Saved.", "toast.nameUrlMissing": "Name and URL are required.", "toast.nameMissing": "Name is required.", "toast.invalidUrl": "The URL is invalid.", "toast.imageSaved": "Image saved.", "toast.imagesSaved": "{count} images saved.", "toast.imageError": "The image could not be saved.", "toast.imageUrlSaved": "Image URL saved locally.", "toast.imageUrlError": "The image URL could not be imported.", "toast.shortcutSaved": "Shortcut saved.", "toast.shortcutUpdated": "Shortcut updated.", "toast.shortcutDeleted": "Shortcut deleted.", "toast.providerSaved": "Search destination saved.", "toast.providerUpdated": "Search destination updated.", "toast.providerDeleted": "Search destination deleted.", "toast.iconSaved": "Icon saved.", "toast.iconRemoved": "Icon removed.", "toast.iconRestored": "Default icon restored.", "toast.iconError": "The icon could not be saved.", "toast.pinned": "Pinned.", "toast.unpinned": "Unpinned."
   }
 };
 
@@ -59,44 +59,117 @@ const featureOverrides = {
 
 const searchOverrides = {
   es: {
-    "search.browserDefault": "Predeterminado de Chrome",
-    "searchSettings.default": "Búsqueda predeterminada de Chrome",
-    "searchSettings.defaultHelp": "Las búsquedas web generales siempre usan el motor predeterminado configurado en Chrome.",
-    "searchSettings.options": "Destinos de búsqueda adicionales",
-    "searchSettings.optionsHelp": "YouTube y Google Maps se pueden elegir directamente para una búsqueda. Al abrir una pestaña nueva siempre está activa la búsqueda predeterminada de Chrome.",
-    "toast.searchError": "No se pudo abrir la búsqueda predeterminada de Chrome."
+    "search.browserDefault": "Predeterminado de Edge",
+    "searchSettings.default": "Búsqueda predeterminada de Microsoft Edge",
+    "searchSettings.defaultHelp": "Las búsquedas web generales usan el motor predeterminado configurado en Microsoft Edge. Tu selección se guarda localmente.",
+    "searchSettings.providers": "Destinos de búsqueda adicionales",
+    "searchSettings.providersHelp": "Añade hasta tres destinos de búsqueda HTTPS adicionales. Usa {query} como marcador del término de búsqueda.",
+    "searchSettings.url": "URL de búsqueda",
+    "searchSettings.urlPlaceholder": "https://example.com/search?q={query}",
+    "searchSettings.max": "Puedes guardar como máximo tres destinos de búsqueda adicionales.",
+    "searchSettings.empty": "Todavía no hay destinos de búsqueda adicionales guardados.",
+    "toast.searchError": "No se pudo abrir la búsqueda predeterminada de Microsoft Edge.",
+    "toast.providerSaved": "Destino de búsqueda guardado.",
+    "toast.providerUpdated": "Destino de búsqueda actualizado.",
+    "toast.providerDeleted": "Destino de búsqueda eliminado."
   },
   it: {
-    "search.browserDefault": "Predefinita di Chrome",
-    "searchSettings.default": "Ricerca predefinita di Chrome",
-    "searchSettings.defaultHelp": "Le ricerche web generali usano sempre il motore predefinito configurato in Chrome.",
-    "searchSettings.options": "Destinazioni di ricerca aggiuntive",
-    "searchSettings.optionsHelp": "YouTube e Google Maps possono essere selezionati direttamente per una singola ricerca. In una nuova scheda è sempre attiva la ricerca predefinita di Chrome.",
-    "toast.searchError": "Impossibile aprire la ricerca predefinita di Chrome."
+    "search.browserDefault": "Predefinita di Edge",
+    "searchSettings.default": "Ricerca predefinita di Microsoft Edge",
+    "searchSettings.defaultHelp": "Le ricerche web generali usano il motore predefinito configurato in Microsoft Edge. La selezione viene salvata localmente.",
+    "searchSettings.providers": "Destinazioni di ricerca aggiuntive",
+    "searchSettings.providersHelp": "Aggiungi fino a tre destinazioni di ricerca HTTPS. Usa {query} come segnaposto per il termine di ricerca.",
+    "searchSettings.url": "URL di ricerca",
+    "searchSettings.urlPlaceholder": "https://example.com/search?q={query}",
+    "searchSettings.max": "Puoi salvare al massimo tre destinazioni di ricerca aggiuntive.",
+    "searchSettings.empty": "Nessuna destinazione di ricerca aggiuntiva salvata.",
+    "toast.searchError": "Impossibile aprire la ricerca predefinita di Microsoft Edge.",
+    "toast.providerSaved": "Destinazione di ricerca salvata.",
+    "toast.providerUpdated": "Destinazione di ricerca aggiornata.",
+    "toast.providerDeleted": "Destinazione di ricerca eliminata."
   },
   pl: {
-    "search.browserDefault": "Domyślna Chrome",
-    "searchSettings.default": "Domyślne wyszukiwanie Chrome",
-    "searchSettings.defaultHelp": "Ogólne wyszukiwanie w internecie zawsze korzysta z domyślnej wyszukiwarki ustawionej w Chrome.",
-    "searchSettings.options": "Dodatkowe miejsca wyszukiwania",
-    "searchSettings.optionsHelp": "YouTube i Mapy Google można wybrać bezpośrednio dla pojedynczego wyszukiwania. W nowej karcie zawsze aktywne jest domyślne wyszukiwanie Chrome.",
-    "toast.searchError": "Nie udało się otworzyć domyślnego wyszukiwania Chrome."
+    "search.browserDefault": "Domyślna Edge",
+    "searchSettings.default": "Domyślne wyszukiwanie Microsoft Edge",
+    "searchSettings.defaultHelp": "Ogólne wyszukiwanie w internecie korzysta z domyślnej wyszukiwarki ustawionej w Microsoft Edge. Wybór jest zapisywany lokalnie.",
+    "searchSettings.providers": "Dodatkowe miejsca wyszukiwania",
+    "searchSettings.providersHelp": "Dodaj maksymalnie trzy dodatkowe miejsca wyszukiwania HTTPS. Użyj {query} jako znacznika wyszukiwanego hasła.",
+    "searchSettings.url": "URL wyszukiwania",
+    "searchSettings.urlPlaceholder": "https://example.com/search?q={query}",
+    "searchSettings.max": "Możesz zapisać maksymalnie trzy dodatkowe miejsca wyszukiwania.",
+    "searchSettings.empty": "Nie zapisano jeszcze dodatkowych miejsc wyszukiwania.",
+    "toast.searchError": "Nie udało się otworzyć domyślnego wyszukiwania Microsoft Edge.",
+    "toast.providerSaved": "Miejsce wyszukiwania zapisano.",
+    "toast.providerUpdated": "Miejsce wyszukiwania zaktualizowano.",
+    "toast.providerDeleted": "Miejsce wyszukiwania usunięto."
   },
   ru: {
-    "search.browserDefault": "По умолчанию Chrome",
-    "searchSettings.default": "Поиск Chrome по умолчанию",
-    "searchSettings.defaultHelp": "Обычный веб-поиск всегда использует поисковую систему, заданную в Chrome по умолчанию.",
-    "searchSettings.options": "Дополнительные варианты поиска",
-    "searchSettings.optionsHelp": "Для отдельного запроса можно напрямую выбрать YouTube или Google Карты. В новой вкладке всегда активен поиск Chrome по умолчанию.",
-    "toast.searchError": "Не удалось открыть поиск Chrome по умолчанию."
+    "search.browserDefault": "По умолчанию в Edge",
+    "searchSettings.default": "Поиск Microsoft Edge по умолчанию",
+    "searchSettings.defaultHelp": "Обычный веб-поиск использует поисковую систему, заданную в Microsoft Edge по умолчанию. Выбор сохраняется локально.",
+    "searchSettings.providers": "Дополнительные варианты поиска",
+    "searchSettings.providersHelp": "Добавьте до трёх дополнительных HTTPS-вариантов поиска. Используйте {query} как заполнитель для поискового запроса.",
+    "searchSettings.url": "URL поиска",
+    "searchSettings.urlPlaceholder": "https://example.com/search?q={query}",
+    "searchSettings.max": "Можно сохранить не более трёх дополнительных вариантов поиска.",
+    "searchSettings.empty": "Дополнительные варианты поиска пока не сохранены.",
+    "toast.searchError": "Не удалось открыть поиск Microsoft Edge по умолчанию.",
+    "toast.providerSaved": "Вариант поиска сохранён.",
+    "toast.providerUpdated": "Вариант поиска обновлён.",
+    "toast.providerDeleted": "Вариант поиска удалён."
   },
   fr: {
-    "search.browserDefault": "Par défaut de Chrome",
-    "searchSettings.default": "Recherche par défaut de Chrome",
-    "searchSettings.defaultHelp": "Les recherches web générales utilisent toujours le moteur par défaut configuré dans Chrome.",
-    "searchSettings.options": "Destinations de recherche supplémentaires",
-    "searchSettings.optionsHelp": "YouTube et Google Maps peuvent être choisis directement pour une recherche. La recherche par défaut de Chrome est toujours active à l’ouverture d’un nouvel onglet.",
-    "toast.searchError": "Impossible d’ouvrir la recherche par défaut de Chrome."
+    "search.browserDefault": "Par défaut d’Edge",
+    "searchSettings.default": "Recherche par défaut de Microsoft Edge",
+    "searchSettings.defaultHelp": "Les recherches web générales utilisent le moteur par défaut configuré dans Microsoft Edge. Votre sélection est enregistrée localement.",
+    "searchSettings.providers": "Destinations de recherche supplémentaires",
+    "searchSettings.providersHelp": "Ajoutez jusqu’à trois destinations de recherche HTTPS supplémentaires. Utilisez {query} comme paramètre du terme recherché.",
+    "searchSettings.url": "URL de recherche",
+    "searchSettings.urlPlaceholder": "https://example.com/search?q={query}",
+    "searchSettings.max": "Vous pouvez enregistrer au maximum trois destinations de recherche supplémentaires.",
+    "searchSettings.empty": "Aucune destination de recherche supplémentaire enregistrée.",
+    "toast.searchError": "Impossible d’ouvrir la recherche par défaut de Microsoft Edge.",
+    "toast.providerSaved": "Destination de recherche enregistrée.",
+    "toast.providerUpdated": "Destination de recherche mise à jour.",
+    "toast.providerDeleted": "Destination de recherche supprimée."
+  }
+};
+
+const feedbackOverrides = {
+  es: {
+    "tiles.website": "Sitio web", "tiles.pin": "Fijar", "tiles.unpin": "Desfijar",
+    "background.mistyLake": "Lago con niebla", "background.canyonDusk": "Cañón al anochecer", "background.basaltCoast": "Costa de basalto", "background.forestMeadow": "Claro del bosque",
+    "toast.loadError": "La página de inicio no se pudo cargar completamente.", "toast.saved": "Guardado.", "toast.nameUrlMissing": "Se requieren el nombre y la URL.", "toast.nameMissing": "Se requiere un nombre.", "toast.invalidUrl": "La URL no es válida.",
+    "toast.imageSaved": "Imagen guardada.", "toast.imagesSaved": "{count} imágenes guardadas.", "toast.imageError": "No se pudo guardar la imagen.", "toast.imageUrlSaved": "URL de imagen guardada localmente.", "toast.imageUrlError": "No se pudo importar la URL de la imagen.",
+    "toast.shortcutSaved": "Acceso directo guardado.", "toast.shortcutUpdated": "Acceso directo actualizado.", "toast.shortcutDeleted": "Acceso directo eliminado.", "toast.iconSaved": "Icono guardado.", "toast.iconRemoved": "Icono eliminado.", "toast.iconRestored": "Icono predeterminado restaurado.", "toast.iconError": "No se pudo guardar el icono.", "toast.pinned": "Fijado.", "toast.unpinned": "Desfijado."
+  },
+  it: {
+    "tiles.website": "Sito web", "tiles.pin": "Fissa", "tiles.unpin": "Rimuovi",
+    "background.mistyLake": "Lago nebbioso", "background.canyonDusk": "Canyon al tramonto", "background.basaltCoast": "Costa basaltica", "background.forestMeadow": "Radura nel bosco",
+    "toast.loadError": "Impossibile caricare completamente la pagina iniziale.", "toast.saved": "Salvato.", "toast.nameUrlMissing": "Nome e URL sono obbligatori.", "toast.nameMissing": "Il nome è obbligatorio.", "toast.invalidUrl": "L’URL non è valido.",
+    "toast.imageSaved": "Immagine salvata.", "toast.imagesSaved": "{count} immagini salvate.", "toast.imageError": "Impossibile salvare l’immagine.", "toast.imageUrlSaved": "URL dell’immagine salvato localmente.", "toast.imageUrlError": "Impossibile importare l’URL dell’immagine.",
+    "toast.shortcutSaved": "Collegamento salvato.", "toast.shortcutUpdated": "Collegamento aggiornato.", "toast.shortcutDeleted": "Collegamento eliminato.", "toast.iconSaved": "Icona salvata.", "toast.iconRemoved": "Icona rimossa.", "toast.iconRestored": "Icona predefinita ripristinata.", "toast.iconError": "Impossibile salvare l’icona.", "toast.pinned": "Fissato.", "toast.unpinned": "Rimosso."
+  },
+  pl: {
+    "tiles.website": "Witryna", "tiles.pin": "Przypnij", "tiles.unpin": "Odepnij",
+    "background.mistyLake": "Jezioro we mgle", "background.canyonDusk": "Zmierzch w kanionie", "background.basaltCoast": "Bazaltowe wybrzeże", "background.forestMeadow": "Leśna polana",
+    "toast.loadError": "Nie udało się w pełni wczytać strony startowej.", "toast.saved": "Zapisano.", "toast.nameUrlMissing": "Nazwa i adres URL są wymagane.", "toast.nameMissing": "Nazwa jest wymagana.", "toast.invalidUrl": "Adres URL jest nieprawidłowy.",
+    "toast.imageSaved": "Obraz zapisano.", "toast.imagesSaved": "Zapisano obrazy: {count}.", "toast.imageError": "Nie udało się zapisać obrazu.", "toast.imageUrlSaved": "Adres URL obrazu zapisano lokalnie.", "toast.imageUrlError": "Nie udało się zaimportować adresu URL obrazu.",
+    "toast.shortcutSaved": "Skrót zapisano.", "toast.shortcutUpdated": "Skrót zaktualizowano.", "toast.shortcutDeleted": "Skrót usunięto.", "toast.iconSaved": "Ikonę zapisano.", "toast.iconRemoved": "Ikonę usunięto.", "toast.iconRestored": "Przywrócono domyślną ikonę.", "toast.iconError": "Nie udało się zapisać ikony.", "toast.pinned": "Przypięto.", "toast.unpinned": "Odpięto."
+  },
+  ru: {
+    "tiles.website": "Сайт", "tiles.pin": "Закрепить", "tiles.unpin": "Открепить",
+    "background.mistyLake": "Озеро в тумане", "background.canyonDusk": "Каньон в сумерках", "background.basaltCoast": "Базальтовый берег", "background.forestMeadow": "Лесная поляна",
+    "toast.loadError": "Не удалось полностью загрузить стартовую страницу.", "toast.saved": "Сохранено.", "toast.nameUrlMissing": "Необходимо указать название и URL.", "toast.nameMissing": "Необходимо указать название.", "toast.invalidUrl": "Некорректный URL.",
+    "toast.imageSaved": "Изображение сохранено.", "toast.imagesSaved": "Сохранено изображений: {count}.", "toast.imageError": "Не удалось сохранить изображение.", "toast.imageUrlSaved": "URL изображения сохранён локально.", "toast.imageUrlError": "Не удалось импортировать URL изображения.",
+    "toast.shortcutSaved": "Ярлык сохранён.", "toast.shortcutUpdated": "Ярлык обновлён.", "toast.shortcutDeleted": "Ярлык удалён.", "toast.iconSaved": "Значок сохранён.", "toast.iconRemoved": "Значок удалён.", "toast.iconRestored": "Стандартный значок восстановлен.", "toast.iconError": "Не удалось сохранить значок.", "toast.pinned": "Закреплено.", "toast.unpinned": "Откреплено."
+  },
+  fr: {
+    "tiles.website": "Site web", "tiles.pin": "Épingler", "tiles.unpin": "Désépingler",
+    "background.mistyLake": "Lac brumeux", "background.canyonDusk": "Canyon au crépuscule", "background.basaltCoast": "Côte basaltique", "background.forestMeadow": "Clairière forestière",
+    "toast.loadError": "La page d’accueil n’a pas pu être chargée complètement.", "toast.saved": "Enregistré.", "toast.nameUrlMissing": "Le nom et l’URL sont obligatoires.", "toast.nameMissing": "Le nom est obligatoire.", "toast.invalidUrl": "L’URL n’est pas valide.",
+    "toast.imageSaved": "Image enregistrée.", "toast.imagesSaved": "{count} images enregistrées.", "toast.imageError": "Impossible d’enregistrer l’image.", "toast.imageUrlSaved": "URL de l’image enregistrée localement.", "toast.imageUrlError": "Impossible d’importer l’URL de l’image.",
+    "toast.shortcutSaved": "Raccourci enregistré.", "toast.shortcutUpdated": "Raccourci mis à jour.", "toast.shortcutDeleted": "Raccourci supprimé.", "toast.iconSaved": "Icône enregistrée.", "toast.iconRemoved": "Icône supprimée.", "toast.iconRestored": "Icône par défaut restaurée.", "toast.iconError": "Impossible d’enregistrer l’icône.", "toast.pinned": "Épinglé.", "toast.unpinned": "Désépinglé."
   }
 };
 
@@ -105,7 +178,8 @@ for (const [locale, overrides] of Object.entries(localeOverrides)) {
     ...translations.en,
     ...overrides,
     ...(featureOverrides[locale] || {}),
-    ...(searchOverrides[locale] || {})
+    ...(searchOverrides[locale] || {}),
+    ...(feedbackOverrides[locale] || {})
   };
 }
 

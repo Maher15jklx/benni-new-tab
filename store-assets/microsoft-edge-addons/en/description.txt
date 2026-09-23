@@ -1,0 +1,15 @@
+StartPane replaces the New Tab page in Microsoft Edge with a fast, calm, and customizable start page. Its single purpose is to make every new tab a clear starting point for search, frequently used websites, and personal backgrounds.
+
+Features:
+• Search the web with the default search provider configured in Microsoft Edge. StartPane uses only the Edge-supported chrome.search extension API and does not read or change that default provider.
+• Up to three additional HTTPS search destinations. YouTube and Google Maps are prefilled, contacted only after the user selects one and submits a search, and can be edited, deleted, or replaced.
+• Use built-in quick links, create personal shortcuts, and pin websites.
+• Choose random, daily, or fixed backgrounds, including four bundled backgrounds that work offline.
+• Optionally enable online backgrounds from Picsum Photos, a user-selected HTTPS image API, or a deliberately imported image URL.
+• Switch between light and dark themes, enable focus mode, choose an accent color, and show the clock in automatic, 12-hour, or 24-hour format.
+• Use the interface in English, German, Spanish, French, Italian, Polish, or Russian.
+
+Privacy and transparency:
+StartPane stores settings, shortcuts, pins, additional search destinations, and imported images only in the local Edge extension storage. Search terms are not stored. New installations use local backgrounds, so no image request is sent to an external service unless the user deliberately enables an online image source. When a search is submitted, the term is sent only to the selected search destination. When online images are enabled, only the selected image provider receives the technically necessary request.
+
+StartPane includes no analytics, tracking, advertising, or remote code. The developer operates no server for user data and does not sell or rent data. All executable JavaScript is included in the extension package. Local data can be reset at any time from the settings.

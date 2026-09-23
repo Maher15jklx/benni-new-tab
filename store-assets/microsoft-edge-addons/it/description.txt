@@ -1,0 +1,15 @@
+StartPane sostituisce la pagina Nuova scheda di Microsoft Edge con una pagina iniziale veloce, ordinata e personalizzabile. Il suo unico scopo è rendere ogni nuova scheda un punto di partenza chiaro per la ricerca, i siti usati più spesso e gli sfondi personali.
+
+Funzioni:
+• Ricerca sul Web tramite il provider predefinito configurato in Microsoft Edge. StartPane usa esclusivamente l’API per estensioni chrome.search supportata da Edge e non legge né modifica il provider predefinito.
+• Fino a tre destinazioni di ricerca HTTPS aggiuntive. YouTube e Google Maps sono precompilati, vengono contattati solo dopo la selezione e l’invio di una ricerca e possono essere modificati, eliminati o sostituiti.
+• Collegamenti rapidi integrati, scorciatoie personali e siti Web fissati.
+• Sfondi casuali, giornalieri o fissi, oltre a quattro sfondi inclusi disponibili anche offline.
+• Sfondi online facoltativi da Picsum Photos, da un’API immagini HTTPS scelta dall’utente o tramite l’importazione intenzionale di un URL immagine.
+• Temi chiaro e scuro, modalità concentrazione, colore principale e orologio in formato automatico, 12 o 24 ore.
+• Interfaccia disponibile in italiano, tedesco, inglese, spagnolo, francese, polacco e russo.
+
+Privacy e trasparenza:
+StartPane salva impostazioni, scorciatoie, siti fissati, destinazioni di ricerca aggiuntive e immagini importate esclusivamente nell’archivio locale delle estensioni di Edge. I termini di ricerca non vengono salvati. Le nuove installazioni usano sfondi locali; nessuna richiesta di immagini viene quindi inviata a servizi esterni finché l’utente non attiva consapevolmente una fonte online. Quando viene avviata una ricerca, il termine viene inviato solo alla destinazione selezionata. Se gli sfondi online sono attivi, solo il provider scelto riceve la richiesta tecnicamente necessaria.
+
+StartPane non include analisi, tracciamento, pubblicità o codice remoto. Lo sviluppatore non gestisce server per i dati degli utenti e non vende né concede in affitto dati. Tutto il codice JavaScript eseguibile è incluso nel pacchetto dell’estensione. I dati locali possono essere reimpostati in qualsiasi momento dalle impostazioni.

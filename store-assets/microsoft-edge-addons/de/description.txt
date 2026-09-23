@@ -1,0 +1,15 @@
+StartPane ersetzt die Seite „Neuer Tab“ in Microsoft Edge durch eine schnelle, ruhige und anpassbare Startseite. Der alleinige Zweck der Erweiterung ist es, den neuen Tab als übersichtlichen Ausgangspunkt für Suche, häufig verwendete Webseiten und persönliche Hintergründe bereitzustellen.
+
+Funktionen:
+• Websuche über die in Microsoft Edge eingestellte Standardsuchmaschine. Dafür verwendet StartPane ausschließlich die von Edge unterstützte Erweiterungs-API chrome.search; die Standardsuchmaschine wird weder ausgelesen noch verändert.
+• Bis zu drei zusätzliche HTTPS-Suchziele. YouTube und Google Maps sind vorbefüllt, werden nur nach Auswahl und Absenden einer Suche kontaktiert und können bearbeitet, gelöscht oder ersetzt werden.
+• Schnellzugriffe, eigene Shortcuts und angepinnte Webseiten.
+• Zufällige, täglich wechselnde oder fest ausgewählte Hintergrundbilder sowie vier mitgelieferte Offline-Hintergründe.
+• Optional aktivierbare Online-Hintergründe über Picsum Photos, eine selbst gewählte HTTPS-Bild-API oder den bewussten Import einer Bild-URL.
+• Helles und dunkles Design, Fokusmodus, Akzentfarben und eine Uhr im automatischen, 12- oder 24-Stunden-Format.
+• Oberfläche auf Deutsch, Englisch, Spanisch, Französisch, Italienisch, Polnisch und Russisch.
+
+Datenschutz und Transparenz:
+StartPane speichert Einstellungen, Shortcuts, Pins, zusätzliche Suchziele und importierte Bilder ausschließlich lokal im Erweiterungsspeicher von Edge. Suchbegriffe werden nicht gespeichert. Neue Installationen nutzen lokale Hintergründe, sodass ohne bewusste Aktivierung einer Online-Bildquelle keine Bildanfrage an einen externen Dienst erfolgt. Bei einer Suche wird der Begriff nur an das ausgewählte Suchziel übergeben. Bei aktivierten Online-Bildern erhält ausschließlich der ausgewählte Bildanbieter die technisch notwendige Anfrage.
+
+StartPane enthält keine Analyse, kein Tracking, keine Werbung und keinen Remote-Code. Der Entwickler betreibt keinen Server für Nutzerdaten und verkauft oder vermietet keine Daten. Sämtlicher ausführbarer JavaScript-Code ist im Erweiterungspaket enthalten. Lokale Daten lassen sich jederzeit in den Einstellungen zurücksetzen.

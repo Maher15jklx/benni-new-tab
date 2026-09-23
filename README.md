@@ -1,35 +1,21 @@
-# Benni New Tab
-Based on BraveLikeNewTab by weltraumcowboy67:
-https://github.com/weltraumcowboy67/BraveLikeNewTab
+# StartPane
 
-Benni New Tab ersetzt die Seite „Neuer Tab“ in Google Chrome und Microsoft Edge durch eine schnelle, ruhige und anpassbare Startseite. Die Erweiterung basiert auf Manifest V3, kommt ohne Framework und ohne Build-Schritt aus und speichert Einstellungen, eigene Bilder, Shortcuts und Pins lokal im Browser.
+StartPane ersetzt die Seite „Neuer Tab“ in Microsoft Edge durch eine schnelle, ruhige und anpassbare Startseite. Die Erweiterung ist für Edge und Manifest V3 ausgelegt, kommt ohne Framework oder Build-Schritt aus und speichert Einstellungen sowie eigene Inhalte lokal im Browser.
 
 ## Funktionen
 
-- Allgemeine Websuche über die in Chrome eingestellte Standardsuchmaschine
-- Direkte, nur für die jeweilige Suche ausgewählte Ziele für YouTube und Google Maps
+- Allgemeine Websuche über die in Microsoft Edge eingestellte Standardsuchmaschine
+- Bis zu drei zusätzliche, frei konfigurierbare HTTPS-Suchziele
 - Schnellzugriffe, eigene Shortcuts und angepinnte Seiten
 - Zufällige, tägliche oder feste Hintergrundbilder
 - Vier gebündelte Offline-Hintergründe
-- Optionale Online-Bilder über Picsum oder eine eigene HTTPS-Bild-API
+- Optionale Online-Bilder über Picsum Photos oder eine eigene HTTPS-Bild-API
 - Dark Mode, Light Mode, Fokusmodus und frei wählbare Akzentfarbe
 - Uhr mit automatischem, 12- oder 24-Stunden-Format
 - Deutsch, Englisch, Spanisch, Französisch, Italienisch, Polnisch und Russisch
-- Lokale Datenspeicherung über die Chrome-Extension-API
+- Lokale Datenspeicherung über die Erweiterungs-API von Microsoft Edge
 
-## Lokal installieren
-
-### Google Chrome
-
-1. In Chrome `chrome://extensions` öffnen.
-2. Oben rechts den **Entwicklermodus** aktivieren.
-3. **Entpackte Erweiterung laden** wählen.
-4. Diesen Repository-Ordner auswählen – darin liegt die `manifest.json`.
-5. Einen neuen Tab öffnen.
-
-Nach Änderungen an den Dateien auf `chrome://extensions` bei Benni New Tab auf **Neu laden** klicken.
-
-### Microsoft Edge
+## Lokal in Microsoft Edge installieren
 
 1. In Edge `edge://extensions` öffnen.
 2. Links den **Entwicklermodus** aktivieren.
@@ -37,17 +23,18 @@ Nach Änderungen an den Dateien auf `chrome://extensions` bei Benni New Tab auf 
 4. Diesen Repository-Ordner auswählen – darin liegt die `manifest.json`.
 5. Einen neuen Tab öffnen.
 
-Nach Änderungen an den Dateien auf `edge://extensions` bei Benni New Tab auf **Neu laden** klicken.
+Nach Änderungen an den Dateien auf `edge://extensions` bei StartPane auf **Neu laden** klicken.
 
 ## Entwicklung
 
-Die Erweiterung verwendet nur HTML, CSS und JavaScript. Es müssen keine Abhängigkeiten installiert werden.
+StartPane verwendet nur HTML, CSS und JavaScript. Es müssen keine Laufzeitabhängigkeiten installiert werden.
 
 ```powershell
 npm test
+npm run test:edge
 ```
 
-Der Test prüft unter anderem Manifest V3, referenzierte Dateien, Übersetzungen, PNG-Abmessungen und die JavaScript-Syntax.
+`npm test` prüft unter anderem Manifest V3, referenzierte Dateien, Übersetzungen, Store-Unterlagen, Bildabmessungen und die JavaScript-Syntax. `npm run test:edge` lädt die Erweiterung zusätzlich in ein isoliertes lokales Edge-Profil und prüft Suche, Speicherung und die wichtigsten Einstellungen ohne Live-Server.
 
 Ein Store-fertiges ZIP-Paket lässt sich so erzeugen:
 
@@ -55,7 +42,7 @@ Ein Store-fertiges ZIP-Paket lässt sich so erzeugen:
 npm run package
 ```
 
-Das Ergebnis liegt anschließend unter `dist/benni-new-tab-chrome-v1.0.1.zip`. Die `manifest.json` befindet sich dabei direkt im Stamm des ZIP-Archivs, wie es der Chrome Web Store erwartet.
+Das Ergebnis liegt anschließend unter `dist/startpane-edge-v1.1.0.zip`. Die `manifest.json` befindet sich direkt im Stamm des ZIP-Archivs, wie es für ein Edge-Add-on-Paket erforderlich ist.
 
 ## Projektstruktur
 
@@ -66,21 +53,36 @@ css/             Layout, Themes und responsive Darstellung
 icons/           Erweiterungs- und Shortcut-Icons
 js/              App, Speicherung, Übersetzungen und Hintergründe
 scripts/         Validierung und Paketierung
-manifest.json    Manifest-V3-Konfiguration für Chromium-Browser
+store-assets/    Beschreibungen, Logo und Screenshots für Microsoft Edge Add-ons
+manifest.json    Manifest-V3-Konfiguration für Microsoft Edge
 newtab.html      Neuer-Tab-Seite
 ```
 
+## Suche in Edge
+
+Die allgemeine Suche verwendet `chrome.search.query()`. Microsoft Edge stellt unterstützte Chromium-Erweiterungs-APIs unter dem Namespace `chrome.*` bereit; der Name bezeichnet hier die API-Oberfläche und keine Verbindung zu einem Google-Dienst. Die Suchanfrage wird an die vom Nutzer oder von der Organisation in Edge konfigurierte Standardsuchmaschine übergeben. StartPane liest oder ändert diese Einstellung nicht.
+
+Zusätzlich können bis zu drei Suchziele mit frei gewähltem Namen und einer HTTPS-URL angelegt werden. Die URL kann den Platzhalter `{query}` enthalten, zum Beispiel:
+
+```text
+https://example.com/search?q={query}
+```
+
+Der Platzhalter wird beim Absenden durch den URL-codierten Suchbegriff ersetzt. Fehlt er, ergänzt StartPane automatisch den Parameter `q={query}`. Bei einer Neuinstallation ist die Edge-Standardsuche vorausgewählt. Wer ein anderes Ziel auswählt, speichert diese Auswahl bewusst und kann sie in den Einstellungen jederzeit zurück auf die Edge-Standardsuche setzen.
+
+Weiterführend: [Microsoft Edge – unterstützte Erweiterungs-APIs](https://learn.microsoft.com/en-us/microsoft-edge/extensions/developer-guide/api-support)
+
 ## Berechtigungen
 
-- `storage`: speichert Einstellungen und importierte Inhalte lokal im Browser.
-- `search`: führt allgemeine Websuchen über die in Chrome eingestellte Standardsuchmaschine aus.
-- Optionale HTTPS-Host-Berechtigungen: werden erst beim ausdrücklichen Import eines Bildes von einer fremden URL für die betroffene Domain angefragt.
+- `storage`: speichert Einstellungen und vom Nutzer hinzugefügte Inhalte lokal in Edge.
+- `search`: übergibt allgemeine Websuchen an die in Edge konfigurierte Standardsuchmaschine.
+- Optionale HTTPS-Hostberechtigungen: werden erst beim ausdrücklichen Import eines Bildes von einer fremden URL für die betroffene Domain angefragt.
 
-Die Erweiterung liest weder Browserverlauf noch geöffnete Tabs. Details stehen in [PRIVACY.md](PRIVACY.md).
+StartPane liest weder den Browserverlauf noch geöffnete Tabs. Details stehen in der [Datenschutzerklärung](PRIVACY.md).
 
 ## Hintergründe
 
-Neue Installationen verwenden standardmäßig ausschließlich die vier lokalen Hintergründe. Unter **Einstellungen > Hintergrundbild** kann Picsum Photos oder eine eigene HTTPS-Bild-API bewusst aktiviert werden. Ist ein Onlinedienst nicht erreichbar, zeigt Benni New Tab automatisch wieder ein lokales Bild.
+Neue Installationen verwenden standardmäßig ausschließlich die vier lokalen Hintergründe. Unter **Einstellungen > Hintergrundbild** kann Picsum Photos oder eine eigene HTTPS-Bild-API bewusst aktiviert werden. Ist ein Onlinedienst nicht erreichbar, zeigt StartPane automatisch wieder ein lokales Bild.
 
 Für eine eigene API werden folgende Platzhalter unterstützt:
 
@@ -90,22 +92,30 @@ https://example.com/image/{width}/{height}?seed={seed}&category={category}
 
 Die URL muss direkt eine Bilddatei liefern. JSON-Antworten werden nicht ausgewertet.
 
-## Veröffentlichung im Chrome Web Store
+## Veröffentlichung als Microsoft-Edge-Add-on
 
-1. Version in `manifest.json` erhöhen.
+1. Version in `manifest.json` und `package.json` erhöhen.
 2. `npm test` ausführen.
 3. `npm run package` ausführen.
-4. Das erzeugte ZIP-Paket im Chrome Web Store Developer Dashboard hochladen.
-5. Store-Texte, Datenschutzlink, Logo und Screenshots ergänzen.
+4. `dist/startpane-edge-v1.1.0.zip` im [Microsoft Partner Center](https://partner.microsoft.com/dashboard/microsoftedge/overview) hochladen.
+5. Store-Texte, Link zur Datenschutzerklärung, Logo und gegebenenfalls Screenshots ergänzen.
 
-Die lokale Installation und das spätere Store-Paket verwenden dieselben Laufzeitdateien.
+Die fertigen Texte, das 300-x-300-Pixel-Logo und die geprüften 1280-x-800-Pixel-Screenshots liegen unter `store-assets/microsoft-edge-addons/`.
 
-## Drittanbieter und Marken
+Die lokale Installation und das Store-Paket verwenden dieselben Laufzeitdateien.
+
+## Kein Remote-Code
+
+StartPane lädt oder führt keinen JavaScript- oder WebAssembly-Code aus dem Internet aus. Sämtlicher ausführbarer Code ist im Erweiterungspaket enthalten. Optionale Netzwerkzugriffe laden ausschließlich vom Nutzer angeforderte Suchseiten oder Bilder als Inhalt.
+
+## Drittanbieter, Ursprung und Marken
+
+StartPane ist eine weiterentwickelte, für Microsoft Edge optimierte Abwandlung von [BraveLikeNewTab](https://github.com/weltraumcowboy67/BraveLikeNewTab). Angaben zu Ursprung und Änderungen stehen in [NOTICE.md](NOTICE.md).
 
 Online-Hintergründe werden optional über [Lorem Picsum](https://picsum.photos/) geladen; der Dienst verwendet Bilder von Unsplash. Für externe Inhalte gelten die Bedingungen der jeweiligen Anbieter.
 
-Chrome, Google Maps, YouTube und das YouTube-Logo sind Marken von Google LLC. Benni New Tab ist ein unabhängiges Projekt und wird nicht von Google unterstützt oder gesponsert.
+Microsoft Edge ist eine Marke der Microsoft-Unternehmensgruppe. Google Maps, YouTube und das YouTube-Logo sind Marken von Google LLC. StartPane ist ein unabhängiges Projekt und wird von den genannten Unternehmen weder unterstützt noch gesponsert.
 
 ## Lizenz
 
-Dieses Projekt steht unter der [GNU Affero General Public License v3.0](LICENSE).
+StartPane steht unter der [GNU Affero General Public License v3.0](LICENSE). Es besteht keine Gewährleistung; maßgeblich ist der vollständige Lizenztext.

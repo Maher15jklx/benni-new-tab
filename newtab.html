@@ -27,10 +27,10 @@
     <div id="backgroundLayerNext" class="background-layer"></div>
     <div class="readability-overlay"></div>
 
-    <main class="page-shell" aria-live="polite">
+    <main id="pageShell" class="page-shell">
       <header class="topbar">
         <time id="clock" class="clock" data-i18n-aria-label="clock.currentTime">--:--</time>
-        <button id="settingsButton" class="icon-button settings-trigger" type="button" data-i18n-aria-label="settings.open" data-i18n-title="settings.title">
+        <button id="settingsButton" class="icon-button settings-trigger" type="button" aria-haspopup="dialog" aria-controls="settingsPanel" data-i18n-aria-label="settings.open" data-i18n-title="settings.title">
           <svg aria-hidden="true"><use href="#icon-gear"></use></svg>
         </button>
       </header>
@@ -67,29 +67,29 @@
       </div>
 
       <div class="settings-layout">
-        <nav class="settings-nav" data-i18n-aria-label="settings.categories">
-          <button class="settings-nav-item active" type="button" data-settings-tab="appearance" aria-selected="true">
+        <nav class="settings-nav" role="tablist" data-i18n-aria-label="settings.categories">
+          <button id="settingsTabAppearance" class="settings-nav-item active" type="button" role="tab" data-settings-tab="appearance" aria-controls="settingsPageAppearance" aria-selected="true">
             <svg aria-hidden="true"><use href="#icon-sliders"></use></svg><span data-i18n="nav.appearance">Darstellung</span>
           </button>
-          <button class="settings-nav-item" type="button" data-settings-tab="background" aria-selected="false">
+          <button id="settingsTabBackground" class="settings-nav-item" type="button" role="tab" data-settings-tab="background" aria-controls="settingsPageBackground" aria-selected="false">
             <svg aria-hidden="true"><use href="#icon-image"></use></svg><span data-i18n="nav.background">Hintergrundbild</span>
           </button>
-          <button class="settings-nav-item" type="button" data-settings-tab="search" aria-selected="false">
+          <button id="settingsTabSearch" class="settings-nav-item" type="button" role="tab" data-settings-tab="search" aria-controls="settingsPageSearch" aria-selected="false">
             <svg aria-hidden="true"><use href="#icon-search"></use></svg><span data-i18n="nav.search">Suchen</span>
           </button>
-          <button class="settings-nav-item" type="button" data-settings-tab="websites" aria-selected="false">
+          <button id="settingsTabWebsites" class="settings-nav-item" type="button" role="tab" data-settings-tab="websites" aria-controls="settingsPageWebsites" aria-selected="false">
             <svg aria-hidden="true"><use href="#icon-grid"></use></svg><span data-i18n="nav.websites">Webseiten</span>
           </button>
-          <button class="settings-nav-item" type="button" data-settings-tab="clock" aria-selected="false">
+          <button id="settingsTabClock" class="settings-nav-item" type="button" role="tab" data-settings-tab="clock" aria-controls="settingsPageClock" aria-selected="false">
             <svg aria-hidden="true"><use href="#icon-clock"></use></svg><span data-i18n="nav.clockLanguage">Uhr & Sprache</span>
           </button>
-          <button class="settings-nav-item" type="button" data-settings-tab="data" aria-selected="false">
+          <button id="settingsTabData" class="settings-nav-item" type="button" role="tab" data-settings-tab="data" aria-controls="settingsPageData" aria-selected="false">
             <svg aria-hidden="true"><use href="#icon-database"></use></svg><span data-i18n="nav.data">Daten</span>
           </button>
         </nav>
 
         <div class="settings-content">
-          <section class="settings-page active" data-settings-page="appearance">
+          <section id="settingsPageAppearance" class="settings-page active" role="tabpanel" aria-labelledby="settingsTabAppearance" data-settings-page="appearance">
             <h3 class="settings-page-title" data-i18n="appearance.title">Darstellung</h3>
             <div class="settings-card">
               <label class="setting-row" for="themeSelect"><span data-i18n="appearance.theme">Theme</span>
@@ -102,7 +102,7 @@
             </div>
           </section>
 
-          <section class="settings-page" data-settings-page="background" hidden>
+          <section id="settingsPageBackground" class="settings-page" role="tabpanel" aria-labelledby="settingsTabBackground" data-settings-page="background" hidden>
             <div class="settings-page-title-row"><h3 class="settings-page-title" data-i18n="background.title">Hintergrundbild</h3><span class="beta-badge">Beta</span></div>
             <div class="settings-card">
               <label class="setting-row" for="backgroundModeSelect"><span data-i18n="background.change">Bildwechsel</span>
@@ -136,18 +136,24 @@
             </div>
           </section>
 
-          <section class="settings-page" data-settings-page="search" hidden>
+          <section id="settingsPageSearch" class="settings-page" role="tabpanel" aria-labelledby="settingsTabSearch" data-settings-page="search" hidden>
             <h3 class="settings-page-title" data-i18n="searchSettings.title">Suchen</h3>
             <div class="settings-card">
-              <div class="setting-row"><span><strong data-i18n="searchSettings.default">Chrome-Standardsuche</strong><small data-i18n="searchSettings.defaultHelp">Allgemeine Websuchen verwenden immer die in Chrome eingestellte Standardsuchmaschine.</small></span></div>
+              <label class="setting-row" for="defaultSearchSelect"><span><strong data-i18n="searchSettings.default">Standard-Suchziel</strong><small data-i18n="searchSettings.defaultHelp">Die Edge-Standardsuche ist voreingestellt. Deine Auswahl wird lokal gespeichert.</small></span><select id="defaultSearchSelect"></select></label>
             </div>
             <div class="settings-section-block">
-              <h4 data-i18n="searchSettings.options">Zusätzliche Suchziele</h4>
-              <p class="settings-note" data-i18n="searchSettings.optionsHelp">YouTube und Google Maps können pro Suche direkt ausgewählt werden. Beim Öffnen eines neuen Tabs ist immer die Chrome-Standardsuche aktiv.</p>
+              <h4 data-i18n="searchSettings.providers">Zusätzliche Suchziele</h4>
+              <p class="settings-note" data-i18n="searchSettings.providersHelp">Bis zu drei zusätzliche Ziele. Nutze {query} als Platzhalter für den Suchbegriff.</p>
+              <form id="searchProviderForm" class="provider-form">
+                <label class="visually-hidden" for="providerLabelInput" data-i18n="common.name">Name</label><input id="providerLabelInput" type="text" maxlength="14" data-i18n-placeholder="common.name" required>
+                <label class="visually-hidden" for="providerUrlInput" data-i18n="searchSettings.url">Such-URL</label><input id="providerUrlInput" type="text" inputmode="url" data-i18n-placeholder="searchSettings.urlPlaceholder" required>
+                <button class="compact-button" type="submit"><svg aria-hidden="true"><use href="#icon-plus"></use></svg><span data-i18n="common.add">Hinzufügen</span></button>
+              </form>
+              <div id="searchProviderList" class="provider-list" data-i18n-aria-label="searchSettings.providers"></div>
             </div>
           </section>
 
-          <section class="settings-page" data-settings-page="websites" hidden>
+          <section id="settingsPageWebsites" class="settings-page" role="tabpanel" aria-labelledby="settingsTabWebsites" data-settings-page="websites" hidden>
             <h3 class="settings-page-title" data-i18n="websites.title">Webseiten</h3>
             <div class="settings-card">
               <label class="setting-row switch-row"><span><strong data-i18n="websites.defaults">Standard-Kacheln</strong><small data-i18n="websites.defaultsHelp">Zeigt die mitgelieferten Schnellzugriffe.</small></span><input id="defaultTilesToggle" type="checkbox" role="switch"></label>
@@ -169,7 +175,7 @@
             </div>
           </section>
 
-          <section class="settings-page" data-settings-page="clock" hidden>
+          <section id="settingsPageClock" class="settings-page" role="tabpanel" aria-labelledby="settingsTabClock" data-settings-page="clock" hidden>
             <h3 class="settings-page-title" data-i18n="clock.title">Uhr & Sprache</h3>
             <div class="settings-card">
               <label class="setting-row switch-row"><span data-i18n="clock.show">Uhr anzeigen</span><input id="showClockToggle" type="checkbox" role="switch"></label>
@@ -182,7 +188,7 @@
             </div>
           </section>
 
-          <section class="settings-page" data-settings-page="data" hidden>
+          <section id="settingsPageData" class="settings-page" role="tabpanel" aria-labelledby="settingsTabData" data-settings-page="data" hidden>
             <h3 class="settings-page-title" data-i18n="data.title">Daten</h3>
             <div class="settings-card">
               <div class="setting-row action-row"><span><strong data-i18n="data.reset">Lokale Daten zurücksetzen</strong><small data-i18n="data.resetHelp">Löscht Einstellungen, Bilder, Shortcuts und Pins dieser Erweiterung.</small></span><button id="resetButton" class="compact-button" type="button" data-i18n="data.resetButton">Zurücksetzen</button></div>

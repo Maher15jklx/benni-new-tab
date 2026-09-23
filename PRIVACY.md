@@ -1,37 +1,40 @@
-# Datenschutzerklärung – Benni New Tab
+# Datenschutzerklärung – StartPane
 
-Stand: 19. September 2026
+Stand: 23. September 2026
 
-Diese Datenschutzerklärung beschreibt, wie die Browsererweiterung **Benni New Tab** Daten verarbeitet. Verantwortlich und Kontakt für Datenschutzanfragen ist:
+Diese Datenschutzerklärung beschreibt, wie die Microsoft-Edge-Erweiterung **StartPane** Daten verarbeitet. Verantwortlich und Kontakt für Datenschutzanfragen ist:
 
 **E-Mail:** [maherrasho@proton.me](mailto:maherrasho@proton.me)
 
 ## Zweck der Erweiterung
 
-Benni New Tab ersetzt die Seite „Neuer Tab“ durch eine anpassbare Startseite. Die Erweiterung bietet eine Suche über die im Browser eingestellte Standardsuchmaschine, optionale direkte Suchen bei YouTube und Google Maps, lokale Shortcuts und Pins, eine Uhr sowie auswählbare Hintergrundbilder. Daten werden nur verarbeitet, soweit dies für diese Funktionen erforderlich ist.
+StartPane ersetzt die Seite „Neuer Tab“ in Microsoft Edge durch eine anpassbare Startseite. Die Erweiterung bietet die Suche über die in Edge eingestellte Standardsuchmaschine, bis zu drei zusätzliche HTTPS-Suchziele, lokale Shortcuts und Pins, eine Uhr sowie auswählbare Hintergrundbilder. YouTube und Google Maps sind bei einer Neuinstallation als zusätzliche Suchziele vorbefüllt; sie können bearbeitet oder gelöscht werden. Daten werden nur verarbeitet, soweit dies für diese Funktionen erforderlich ist.
 
-## Lokal im Browser gespeicherte Daten
+## Lokal in Edge gespeicherte Daten
 
-Benni New Tab speichert folgende Daten ausschließlich im lokalen Erweiterungsspeicher des Browsers (`chrome.storage.local`):
+StartPane speichert folgende Daten im lokalen Erweiterungsspeicher von Microsoft Edge (`chrome.storage.local`):
 
 - Darstellungs-, Sprach-, Uhr- und Hintergrundeinstellungen
 - Namen und HTTPS-Adressen selbst angelegter Shortcuts
 - Namen und HTTPS-Adressen angepinnter Webseiten
+- Namen und HTTPS-Suchvorlagen für bis zu drei zusätzliche Suchziele, einschließlich der vorbefüllten und lokal änderbaren Ziele YouTube und Google Maps
 - Vom Nutzer importierte Bilder und Icons
-- Die Auswahl lokaler oder optional aktivierter Online-Hintergründe
+- Die Auswahl lokaler oder ausdrücklich aktivierter Online-Hintergründe
 
-Suchbegriffe werden nicht von der Erweiterung gespeichert. Benni New Tab betreibt keinen Server, an den diese lokal gespeicherten Daten übertragen werden.
+`chrome.storage.local` ist der von Edge bereitgestellte API-Name für den lokalen Erweiterungsspeicher. StartPane betreibt keinen Server, an den diese Daten gesendet werden. Suchbegriffe werden von StartPane nicht gespeichert.
 
-Die lokalen Daten können in der Erweiterung über **Einstellungen > Daten > Zurücksetzen** gelöscht werden. Beim Entfernen der Erweiterung löscht der Browser den zugehörigen lokalen Erweiterungsspeicher.
+Die lokalen Daten können in der Erweiterung über **Einstellungen > Daten > Zurücksetzen** gelöscht werden. Beim Entfernen der Erweiterung entfernt Edge den zugehörigen Erweiterungsspeicher.
 
 ## Suche und externe Webseiten
 
-Beim Absenden einer Suche wird der eingegebene Suchbegriff nur an das ausdrücklich ausgewählte Suchziel übermittelt:
+Beim Absenden einer Suche wird der eingegebene Suchbegriff nur an das ausgewählte Suchziel übermittelt:
 
-- Die erste und bei jedem neuen Tab aktive Option verwendet die Chrome-Such-API. Dadurch wird der Suchbegriff an die vom Nutzer in Chrome eingestellte Standardsuchmaschine übergeben.
-- Bei einer ausdrücklich ausgewählten YouTube- oder Google-Maps-Suche wird der Suchbegriff direkt in der jeweiligen HTTPS-Suchadresse geöffnet.
+- Die bei einer Neuinstallation vorausgewählte Option verwendet die von Edge unterstützte API `chrome.search.query()`. Dadurch wird der Suchbegriff an die in Edge konfigurierte Standardsuchmaschine übergeben. StartPane liest oder verändert diese Standardsuchmaschine nicht.
+- Bei einem ausgewählten zusätzlichen Suchziel wird der Suchbegriff in die gespeicherte HTTPS-Suchvorlage eingesetzt und die daraus erzeugte Adresse geöffnet. Die vorbefüllten Ziele YouTube und Google Maps werden nur kontaktiert, wenn der Nutzer das jeweilige Ziel auswählt und eine Suche absendet; beide lassen sich bearbeiten oder löschen.
 
-Beim Öffnen eines Shortcuts oder Pins wird die vom Nutzer ausgewählte Webseite aufgerufen. Die aufgerufenen Anbieter verarbeiten technisch notwendige Verbindungsdaten wie IP-Adresse, Browserinformationen und Anfragezeitpunkt nach ihren eigenen Datenschutzbestimmungen. Benni New Tab erhält diese Daten nicht.
+Das zuletzt ausdrücklich ausgewählte Suchziel wird lokal gespeichert und bleibt für neue Tabs aktiv, bis der Nutzer ein anderes Ziel auswählt oder die lokalen Daten zurücksetzt.
+
+Beim Öffnen eines Shortcuts oder Pins wird die vom Nutzer ausgewählte Webseite aufgerufen. Der jeweilige Such- oder Webseitenanbieter kann technisch notwendige Verbindungsdaten wie IP-Adresse, Browserinformationen, Zieladresse, Suchbegriff und Anfragezeitpunkt nach seinen eigenen Datenschutzbestimmungen verarbeiten. StartPane erhält diese Daten nicht.
 
 ## Bilder und externe Anfragen
 
@@ -39,32 +42,28 @@ Neue Installationen verwenden standardmäßig ausschließlich mitgelieferte loka
 
 - Bei aktivierter Picsum-Quelle wird ein Bild über eine HTTPS-Verbindung von `picsum.photos` geladen.
 - Bei einer selbst eingetragenen HTTPS-Bild-API wird ein Bild vom angegebenen Host geladen.
-- Beim ausdrücklich gestarteten Import einer HTTPS-Bild-URL fragt der Browser eine optionale Berechtigung für den konkreten Host an und lädt anschließend die angegebene Bilddatei. Das importierte Bild wird verarbeitet und lokal gespeichert.
+- Beim ausdrücklich gestarteten Import einer HTTPS-Bild-URL fragt Edge eine optionale Berechtigung für den konkreten Host an und lädt anschließend die angegebene Bilddatei. Das importierte Bild wird verarbeitet und lokal gespeichert.
 
-Der jeweilige Bildanbieter erhält dabei technisch notwendige Verbindungs- und Anfragedaten, insbesondere IP-Adresse, Browserinformationen, angefragte Bildadresse und Anfragezeitpunkt. Bei einer selbst eingetragenen Bild-API bestimmt der Nutzer den Empfänger. Benni New Tab erhält diese Daten nicht und übermittelt keine lokal gespeicherten Einstellungen, Shortcuts, Pins, Bilder oder Icons an den Anbieter.
+Der jeweilige Bildanbieter kann dabei technisch notwendige Verbindungs- und Anfragedaten verarbeiten, insbesondere IP-Adresse, Browserinformationen, angefragte Bildadresse und Anfragezeitpunkt. Bei einer selbst eingetragenen Bild-API bestimmt der Nutzer den Empfänger. StartPane übermittelt keine lokal gespeicherten Einstellungen, Shortcuts, Pins, Bilder oder Icons an diese Anbieter.
 
 ## Berechtigungen
 
-- `storage` wird ausschließlich verwendet, um die oben genannten Einstellungen und nutzerseitig hinzugefügten Inhalte lokal zu speichern.
-- `search` wird ausschließlich verwendet, um allgemeine Websuchen über die in Chrome eingestellte Standardsuchmaschine auszuführen. Die Erweiterung liest oder verändert die Standardsuchmaschine nicht.
+- `storage` wird ausschließlich verwendet, um die oben genannten Einstellungen und vom Nutzer hinzugefügten Inhalte lokal in Edge zu speichern.
+- `search` wird ausschließlich verwendet, um allgemeine Websuchen über die in Edge konfigurierte Standardsuchmaschine auszuführen.
 - Optionale HTTPS-Hostberechtigungen werden nur nach einer ausdrücklichen Nutzeraktion und nur für den Import einer Bilddatei von der betroffenen Domain angefragt.
 
-Die Erweiterung greift nicht auf den Browserverlauf, geöffnete Tabs, Passwörter, E-Mails, Zahlungsdaten, Gesundheitsdaten oder GPS- beziehungsweise andere präzise Standortdaten zu.
+StartPane greift nicht auf den Browserverlauf, die Liste geöffneter Tabs, Passwörter, E-Mails, Zahlungsdaten, Gesundheitsdaten oder GPS- beziehungsweise andere präzise Standortdaten zu.
 
-## Kategorien im Chrome Web Store
+## Kein Remote-Code
 
-Nach den weit gefassten Offenlegungskategorien des Chrome Web Store verarbeitet Benni New Tab **Websitecontent** (Suchbegriffe, Hyperlinks, Bilder und Icons), **Webprotokoll** (vom Nutzer bewusst angelegte oder angepinnte URLs, nicht den Chrome-Browserverlauf) und **Ort** (die IP-Adresse, die bei bewusst ausgelösten Anfragen technisch an den gewählten Such-, Webseiten- oder Bildanbieter übermittelt wird). Alle übrigen im Dashboard genannten Datenkategorien werden nicht verarbeitet.
+StartPane lädt oder führt keinen JavaScript- oder WebAssembly-Code von externen Servern aus. Sämtlicher ausführbarer Code ist Bestandteil des installierten Erweiterungspakets. Externe HTTPS-Anfragen dienen ausschließlich der vom Nutzer ausgelösten Navigation oder dem Laden von Bildinhalten.
 
-## Keine Analyse, Werbung oder Weitergabe
+## Keine Analyse, Werbung oder Verkauf von Daten
 
-Benni New Tab enthält keine Analyse-, Tracking- oder Werbedienste und kein extern geladenes JavaScript oder WebAssembly. Es werden keine Nutzerdaten an den Entwickler, an Werbenetzwerke oder Datenhändler verkauft, vermietet oder übertragen. Nutzerdaten werden nicht für personalisierte Werbung, Profilbildung, Kreditwürdigkeitsprüfungen oder andere Zwecke außerhalb der beschriebenen Funktionen verwendet.
+StartPane enthält keine Analyse-, Tracking- oder Werbedienste. Der Entwickler erhält die lokal gespeicherten Daten und Suchbegriffe nicht. Nutzerdaten werden weder verkauft noch vermietet und nicht für personalisierte Werbung, Profilbildung, Kreditwürdigkeitsprüfungen oder Darlehenszwecke verwendet.
 
-Eine Übermittlung an Such-, Webseiten- oder Bildanbieter erfolgt ausschließlich, wenn sie technisch für die vom Nutzer ausgelöste Funktion erforderlich ist und wie oben beschrieben.
-
-## Eingeschränkte Nutzung (Limited Use)
-
-Die Nutzung und Übertragung von Daten durch Benni New Tab entspricht der Chrome Web Store User Data Policy einschließlich der Anforderungen zur eingeschränkten Nutzung („Limited Use“). Daten werden ausschließlich für die beschriebenen, für den Nutzer sichtbaren Funktionen verarbeitet. Sie werden nicht für personalisierte Werbung, Profilbildung oder andere sachfremde Zwecke verwendet, nicht außerhalb der zulässigen Anwendungsfälle verkauft oder übertragen und nicht zur Beurteilung der Kreditwürdigkeit oder für Darlehenszwecke genutzt. Der Entwickler ermöglicht keinem Menschen den Zugriff auf lokal gespeicherte Nutzerdaten.
+Eine Datenübermittlung an einen Such-, Webseiten- oder Bildanbieter erfolgt nur, wenn sie technisch für eine vom Nutzer ausgelöste beziehungsweise ausdrücklich aktivierte Funktion erforderlich ist und wie oben beschrieben.
 
 ## Änderungen
 
-Bei wesentlichen Änderungen der Datenverarbeitung wird diese Datenschutzerklärung aktualisiert und das Datum am Anfang angepasst. Fragen zum Datenschutz können an [maherrasho@gmail.com](mailto:maherrasho@gmail.com) gesendet werden.
+Bei wesentlichen Änderungen der Datenverarbeitung wird diese Datenschutzerklärung aktualisiert und das Datum am Anfang angepasst. Fragen zum Datenschutz können an [maherrasho@proton.me](mailto:maherrasho@proton.me) gesendet werden.
